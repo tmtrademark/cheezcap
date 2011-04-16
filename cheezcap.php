@@ -3,7 +3,7 @@
 // CheezCap - Cheezburger Custom Administration Panel
 // (c) 2008 - 2010 Cheezburger Network (Pet Holdings, Inc.)
 // LOL: http://cheezburger.com
-// Source: http://github.com/cheezburger/cheezcap/
+// Source: http://github.com/cheezburger/cheezcap
 // Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
 // License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
 //
