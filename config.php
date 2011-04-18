@@ -1,7 +1,7 @@
 <?php
 //
 // CheezCap - Cheezburger Custom Administration Panel
-// (c) 2008 - 2010 Cheezburger Network (Pet Holdings, Inc.)
+// (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
 // LOL: http://cheezburger.com
 // Source: http://code.google.com/p/cheezcap/
 // Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
@@ -10,6 +10,7 @@
 
 $themename = 'CheezCap'; // used on the title of the custom admin page
 $req_cap_to_edit = 'manage_options'; // the user capability that is required to access the CheezCap settings page
+$cap_menu_position = 99; // This value represents the order in the dashboard menu that the CheezCap menu will display in. Larger numbers push it further down.
 
 function cap_get_options() {
 	$number_entries = array( 'Select a Number:', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20' );
@@ -17,7 +18,7 @@ function cap_get_options() {
 	return array(
 		new Group( 'First Group', 'firstGroup',
 			array(
-				new BooleanOption( 
+				new BooleanOption(
 					'Simple Boolean Example',
 					'This will create a simple true/false switch with default of "true".',
 					'simple_boolean_example',
