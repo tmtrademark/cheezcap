@@ -10,7 +10,7 @@
 
 $themename = 'CheezCap'; // used on the title of the custom admin page
 $req_cap_to_edit = 'manage_options'; // the user capability that is required to access the CheezCap settings page
-$cap_menu_position = 99; // This value represents the order in the dashboard menu that the CheezCap menu will display in. Larger numbers push it further down.
+$cap_menu_position = 99; // OPTIONAL: This value represents the order in the dashboard menu that the CheezCap menu will display in. Larger numbers push it further down.
 $cap_icon_url = ""; // OPTIONAL: Path to a custom icon for the CheezCap menu item. ex. $cap_icon_url = WP_CONTENT_URL . '/your-theme-name/images/awesomeicon.png'; Image size should be around 20px x 20px.
 
 function cap_get_options() {
