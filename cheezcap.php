@@ -59,7 +59,7 @@ function cap_add_admin() {
 	}
 
 	$pgName = "$themename Settings";
-	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', basename( __FILE__ ), 'top_level_settings', isset( $cap_icon_url ) ? $cap_icon_url : $default, $cap_menu_position );
+	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', basename( __FILE__ ), 'top_level_settings', isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
 	add_action( "admin_print_scripts-$hook", 'cap_admin_js_libs' );
 	add_action( "admin_footer-$hook", 'cap_admin_js_footer' );
 	add_action( "admin_print_styles-$hook", 'cap_admin_css' );
