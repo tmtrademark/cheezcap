@@ -95,23 +95,23 @@ class TextOption extends Option {
 
 		?>
 		<tr valign="top">
-			<th scope="row"><?php echo $this->name; ?>:</th>
+			<th scope="row"><?php echo esc_html( $this->name . ':' ); ?></th>
 		<?php
 		$commentWidth = 2;
 		if ( $this->useTextArea ) :
 			$commentWidth = 1;
 		?>
-			<td rowspan="2"><textarea style="width:100%;height:100%;" name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>"><?php echo esc_attr( $stdText ); ?></textarea>
+			<td rowspan="2"><textarea style="width:100%;height:100%;" name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>"><?php echo esc_textarea( $stdText ); ?></textarea>
 		<?php
 		else :
 		?>
-			<td><input name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
+			<td><input name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
 		<?php
 		endif;
 		?>
 			</td>
 		</tr>
-                <tr valign="top"><td colspan="<?php echo $commentWidth; ?>"><small><?php echo $this->desc; ?></small></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
+                <tr valign="top"><td colspan="<?php echo absint( $commentWidth ); ?>"><small><?php echo esc_html( $this->desc ); ?></small></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
 		<?php 
 	}
 
@@ -134,13 +134,13 @@ class DropdownOption extends Option {
 	function WriteHtml() {
 		?>	
 		<tr valign="top">
-			<th scope="row"><?php echo $this->name; ?></th>
+			<th scope="row"><?php echo esc_html( $this->name ); ?></th>
 			<td>
-				<select name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>">
+				<select name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>">
 		<?php
 		foreach( $this->options as $option ) :
 		?>
-					<option<?php if ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option )) { echo ' selected="selected"'; } ?>><?php echo $option; ?></option>
+					<option<?php if ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option )) { echo ' selected="selected"'; } ?>><?php echo esc_html( $option ); ?></option>
 		<?php
 		endforeach;
 		?>
@@ -149,7 +149,7 @@ class DropdownOption extends Option {
 		</tr>
 		<tr valign="top">
 			<td colspan=2>
-				<small><?php echo $this->desc; ?></small><hr />
+				<small><?php echo esc_html( $this->desc ); ?></small><hr />
 			</td>
 		</tr>
 		<?php
@@ -248,13 +248,13 @@ function top_level_settings() {
 	global $themename;
 	
 	if ( isset( $_REQUEST['saved'] ) )
-		echo "<div id='message' class='updated fade'><p><strong>$themename settings saved.</strong></p></div>";
+		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings saved.' ) . '</strong></p></div>';
 	if ( isset( $_REQUEST['reset'] ) )
-		echo "<div id='message' class='updated fade'><p><strong>$themename settings reset.</strong></p></div>";
+		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings reset.' ) . '</strong></p></div>';
 	?>
 
 	<div class="wrap">
-		<h2><b><?php echo $themename; ?> Theme Options</b></h2>
+		<h2><b><?php echo esc_html( $themename . ' Theme Options.' ); ?></b></h2>
 		
 		<form method="post">
 
@@ -264,7 +264,7 @@ function top_level_settings() {
 	$groups = cap_get_options();
 	foreach( $groups as $group ) :
 	?>
-					<li><a href='#<?php echo $group->id; ?>'><?php echo $group->name; ?></a></li>
+					<li><a href='<?php echo esc_attr( '#' . $group->id ); ?>'><?php echo esc_html( $group->name ); ?></a></li>
 	<?php
 	endforeach;
 	?>
@@ -272,7 +272,7 @@ function top_level_settings() {
 	<?php
 	foreach( $groups as $group ) :
 	?>
-				<div id='<?php echo $group->id;?>'>
+				<div id='<?php echo esc_attr( $group->id ); ?>'>
 	<?php
 					$group->WriteHtml();
 	?>
@@ -300,7 +300,7 @@ function top_level_settings() {
 		</form>
 		<div class="clear"></div>
 		<h2>Preview (updated when options are saved)</h2>
-		<iframe src="<?php echo home_url( '?preview=true' ); ?>" width="100%" height="600" ></iframe>
+		<iframe src="<?php echo esc_url( home_url( '?preview=true' ) ); ?>" width="100%" height="600" ></iframe>
 	<?php
 }
 
