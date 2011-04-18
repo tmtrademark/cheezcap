@@ -1,9 +1,9 @@
 <?php
 //
 // CheezCap - Cheezburger Custom Administration Panel
-// (c) 2008 - 2010 Cheezburger Network (Pet Holdings, Inc.)
+// (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
 // LOL: http://cheezburger.com
-// Source: http://code.google.com/p/cheezcap/
+// Source: http://github.com/cheezburger/cheezcap/
 // Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
 // License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
 //
@@ -12,13 +12,13 @@ class Group {
 	var $name;
 	var $id;
 	var $options;
-	
+
 	function Group( $_name, $_id, $_options ) {
 		$this->name = $_name;
 		$this->id = "cap_$_id";
 		$this->options = $_options;
 	}
-	
+
 	function WriteHtml() {
 		?>
 		<table class="form-table" width="100%">
@@ -26,13 +26,13 @@ class Group {
 				<th scope="row">Option</th>
 				<th scope="row">Value</th>
 			</tr>
-		<?php 
+		<?php
 			for ( $i=0; $i < count( $this->options ); $i++ ) {
 				$this->options[$i]->WriteHtml();
 			}
 		?>
 		</table>
-		<?php 
+		<?php
 	}
 }
 
@@ -42,7 +42,7 @@ class Option {
 	var $id;
 	var $_key;
 	var $std;
-	
+
 	function Option( $_name, $_desc, $_id, $_std ) {
 		$this->name = $_name;
 		$this->desc = $_desc;
@@ -50,25 +50,25 @@ class Option {
 		$this->_key = $_id;
 		$this->std = $_std;
 	}
-	
+
 	function WriteHtml() {
 		echo '';
 	}
-	
+
 	function Update( $ignored ) {
 		$value = stripslashes_deep( $_POST[$this->id] );
 		update_option( $this->id, $value );
 	}
-	
+
 	function Reset( $ignored ) {
 		update_option( $this->id, $this->std );
 	}
-	
+
 	function Import( $data ) {
 		if ( array_key_exists( $this->id, $data->dict ) )
 			update_option( $this->id, $data->dict[$this->id] );
 	}
-	
+
 	function Export( $data ) {
 		$data->dict[$this->id] = get_option( $this->id );
 	}
@@ -85,34 +85,34 @@ class TextOption extends Option {
 		$this->Option( $_name, $_desc, $_id, $_std );
 		$this->useTextArea = $_useTextArea;
 	}
-	
+
 	function WriteHtml() {
 		$stdText = $this->std;
-	
-		$stdTextOption = get_option( $this->id );	
+
+		$stdTextOption = get_option( $this->id );
 	        if ( ! empty( $stdTextOption ) )
 			$stdText = $stdTextOption;
 
 		?>
 		<tr valign="top">
-			<th scope="row"><?php echo $this->name; ?>:</th>
+			<th scope="row"><?php echo esc_html( $this->name . ':' ); ?></th>
 		<?php
 		$commentWidth = 2;
 		if ( $this->useTextArea ) :
 			$commentWidth = 1;
 		?>
-			<td rowspan="2"><textarea style="width:100%;height:100%;" name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>"><?php echo esc_attr( $stdText ); ?></textarea>
+			<td rowspan="2"><textarea style="width:100%;height:100%;" name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>"><?php echo esc_textarea( $stdText ); ?></textarea>
 		<?php
 		else :
 		?>
-			<td><input name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
+			<td><input name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
 		<?php
 		endif;
 		?>
 			</td>
 		</tr>
-                <tr valign="top"><td colspan="<?php echo $commentWidth; ?>"><small><?php echo $this->desc; ?></small></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
-		<?php 
+                <tr valign="top"><td colspan="<?php echo absint( $commentWidth ); ?>"><small><?php echo esc_html( $this->desc ); ?></small></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
+		<?php
 	}
 
 	function get() {
@@ -130,17 +130,17 @@ class DropdownOption extends Option {
 		$this->Option( $_name, $_desc, $_id, $_stdIndex );
 		$this->options = $_options;
 	}
-	
+
 	function WriteHtml() {
-		?>	
+		?>
 		<tr valign="top">
-			<th scope="row"><?php echo $this->name; ?></th>
+			<th scope="row"><?php echo esc_html( $this->name ); ?></th>
 			<td>
-				<select name="<?php echo $this->id; ?>" id="<?php echo $this->id; ?>">
+				<select name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>">
 		<?php
 		foreach( $this->options as $option ) :
 		?>
-					<option<?php if ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option )) { echo ' selected="selected"'; } ?>><?php echo $option; ?></option>
+					<option<?php if ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option ) ) { echo ' selected="selected"'; } ?>><?php echo esc_html( $option ); ?></option>
 		<?php
 		endforeach;
 		?>
@@ -149,7 +149,7 @@ class DropdownOption extends Option {
 		</tr>
 		<tr valign="top">
 			<td colspan=2>
-				<small><?php echo $this->desc; ?></small><hr />
+				<small><?php echo esc_html( $this->desc ); ?></small><hr />
 			</td>
 		</tr>
 		<?php
@@ -187,7 +187,7 @@ class BooleanOption extends DropdownOption {
 }
 
 // This class is the handy short cut for accessing config options
-// 
+//
 // $cap->post_ratings is the same as get_bool_option("cap_post_ratings", false)
 //
 class autoconfig {
@@ -201,8 +201,8 @@ class autoconfig {
 		$this->data = array();
 		$options = cap_get_options();
 
-		foreach ($options as $group) {
-			foreach($group->options as $option) {
+		foreach ( $options as $group ) {
+			foreach( $group->options as $option ) {
 				$this->data[$option->_key] = $option;
 			}
 		}
@@ -215,8 +215,8 @@ class autoconfig {
 			return $this->cache[$name];
 
 		$option = $this->data[$name];
-		if ( empty($option) )
-			throw new Exception("Unknown key: $name");
+		if ( empty( $option ) )
+			throw new Exception( "Unknown key: $name" );
 
 		$value = $this->cache[$name] = $option->get();
 		return $value;
@@ -246,25 +246,25 @@ function cap_admin_js_footer() {
 
 function top_level_settings() {
 	global $themename;
-	
+
 	if ( isset( $_REQUEST['saved'] ) )
-		echo "<div id='message' class='updated fade'><p><strong>$themename settings saved.</strong></p></div>";
+		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings saved.' ) . '</strong></p></div>';
 	if ( isset( $_REQUEST['reset'] ) )
-		echo "<div id='message' class='updated fade'><p><strong>$themename settings reset.</strong></p></div>";
+		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings reset.' ) . '</strong></p></div>';
 	?>
 
 	<div class="wrap">
-		<h2><b><?php echo $themename; ?> Theme Options</b></h2>
-		
+		<h2><b><?php echo esc_html( $themename . ' Theme Options.' ); ?></b></h2>
+
 		<form method="post">
 
 			<div id="config-tabs">
 				<ul>
-	<?php 
+	<?php
 	$groups = cap_get_options();
 	foreach( $groups as $group ) :
 	?>
-					<li><a href='#<?php echo $group->id; ?>'><?php echo $group->name; ?></a></li>
+					<li><a href='<?php echo esc_attr( '#' . $group->id ); ?>'><?php echo esc_html( $group->name ); ?></a></li>
 	<?php
 	endforeach;
 	?>
@@ -272,7 +272,7 @@ function top_level_settings() {
 	<?php
 	foreach( $groups as $group ) :
 	?>
-				<div id='<?php echo $group->id;?>'>
+				<div id='<?php echo esc_attr( $group->id ); ?>'>
 	<?php
 					$group->WriteHtml();
 	?>
@@ -283,7 +283,7 @@ function top_level_settings() {
 			</div>
 			<p class="submit alignleft">
 				<input type="hidden" name="action" value="save" />
-				<input name="save" type="submit" value="Save changes" />    
+				<input name="save" type="submit" value="Save changes" />
 			</p>
 		</form>
 		<form enctype="multipart/form-data" method="post">
@@ -300,7 +300,7 @@ function top_level_settings() {
 		</form>
 		<div class="clear"></div>
 		<h2>Preview (updated when options are saved)</h2>
-		<iframe src="<?php echo home_url( '?preview=true' ); ?>" width="100%" height="600" ></iframe>
+		<iframe src="<?php echo esc_url( home_url( '?preview=true' ) ); ?>" width="100%" height="600" ></iframe>
 	<?php
 }
 

@@ -3,7 +3,7 @@
 // CheezCap - Cheezburger Custom Administration Panel
 // (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
 // LOL: http://cheezburger.com
-// Source: http://code.google.com/p/cheezcap/
+// Source: http://github.com/cheezburger/cheezcap/
 // Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
 // License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
 //
@@ -41,14 +41,14 @@ function cap_get_options() {
 					'Inline Options Dropdown Example',
 					'This dropdown creates its options using an inline array.',
 					'inline_options_dropdown_example',
-					array( 'Red', 'Yellow', 'Green' ),
+					array( 'Red', 'Yellow', 'Green' )
 					// Default index is 0, 0 == 'Red' in this case
 				),
 				new DropdownOption(
 					'Reusable Options Dropdown Example',
 					'This dropdown creates its options by reusing an array.',
 					'resuable_options_dropdown_example',
-					$number_entries,
+					$number_entries
 					// Default index is 0, 0 == 'Select a Number:'
 				),
 			)
@@ -116,7 +116,7 @@ function cap_get_options() {
 					'This dropdown creates its options using an inline array.',
 					'inline_options_dropdown_example3',
 					array( 'Red', 'Yellow', 'Green' ),
-					2, // Green
+					2 // Green
 				),
 				new DropdownOption(
 					'Reusable Options Dropdown Example #3',
