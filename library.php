@@ -1,7 +1,7 @@
 <?php
 //
 // CheezCap - Cheezburger Custom Administration Panel
-// (c) 2008 - 2010 Cheezburger Network (Pet Holdings, Inc.)
+// (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
 // LOL: http://cheezburger.com
 // Source: http://github.com/cheezburger/cheezcap/
 // Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
