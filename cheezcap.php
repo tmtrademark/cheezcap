@@ -64,3 +64,24 @@ function cap_add_admin() {
 	add_action( "admin_footer-$hook", 'cap_admin_js_footer' );
 	add_action( "admin_print_styles-$hook", 'cap_admin_css' );
 }
+
+function cap_admin_css() {
+	wp_enqueue_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.3/themes/base/jquery-ui.css', false, '1.7.3' );
+}
+
+function cap_admin_js_libs() {
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-tabs' );
+}
+
+function cap_admin_js_footer() {
+?>
+<script type="text/javascript">
+/* <![CDATA[ */
+	jQuery(document).ready(function($) {
+		$("#config-tabs").tabs();
+	});
+/* ]]> */
+</script>
+<?php
+}
