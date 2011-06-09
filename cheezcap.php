@@ -15,21 +15,34 @@ $cap = new CheezCap();
 
 if ( ! defined( 'LOADED_CONFIG' ) ) {
     add_action( 'admin_menu', 'cap_add_admin' );
+    add_action( 'admin_init', 'cap_handle_admin_actions' );
     define( 'LOADED_CONFIG', 1 );
 }
 
 function cap_add_admin() {
 	global $themename, $req_cap_to_edit, $cap_menu_position, $cap_icon_url;
+	
+	$pgName = sprintf( __( '%s Settings' ), esc_html( $themename ) );
+	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', 'cheezcap', 'top_level_settings', isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
+	add_action( "admin_print_scripts-$hook", 'cap_admin_js_libs' );
+	add_action( "admin_footer-$hook", 'cap_admin_js_footer' );
+	add_action( "admin_print_styles-$hook", 'cap_admin_css' );
+}
 
-	if ( ! current_user_can ( $req_cap_to_edit ) )
-		return;
-
-	if ( isset( $_GET['page'] ) && $_GET['page'] == 'cheezcap' ) {
+function cap_handle_admin_actions() {
+	global $plugin_page, $req_cap_to_edit;
+	
+	if ( $plugin_page == 'cheezcap' ) {
+		
+		if ( ! current_user_can ( $req_cap_to_edit ) )
+			return;
+		
 		$options = cap_get_options();
 		$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
 		$method = false;
 		$done = false;
 		$data = new ImportData();
+		
 		switch ( $action ) {
 			case 'save':
 				$method = 'Update';
@@ -52,17 +65,12 @@ function cap_add_admin() {
 				foreach ( $group->options as $option ) {
 					call_user_func( array( $option, $method ), $data );
 				}
-	    		}
+	    	}
+			
 			if ( $done )
 				call_user_func( $done, $data );
 		}
 	}
-
-	$pgName = sprintf( __( '%s Settings' ), esc_html( $themename ) );
-	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', 'cheezcap', 'top_level_settings', isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
-	add_action( "admin_print_scripts-$hook", 'cap_admin_js_libs' );
-	add_action( "admin_footer-$hook", 'cap_admin_js_footer' );
-	add_action( "admin_print_styles-$hook", 'cap_admin_css' );
 }
 
 function cap_admin_css() {
