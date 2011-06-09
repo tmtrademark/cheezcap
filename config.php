@@ -38,7 +38,6 @@ function cap_get_options() {
 					'Sup Dawg?  I put an option in your option so that you would have options.',
 					true
 				),
-				new CheezCapDropdownOptionExample,
 				new CheezCapDropdownOption(
 					'Reusable Options Dropdown Example',
 					'This dropdown creates its options by reusing an array.',
