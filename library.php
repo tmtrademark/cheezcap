@@ -223,7 +223,7 @@ class CheezCap {
 	}
 }
 
-function top_level_settings() {
+function cap_display_admin_page() {
 	global $themename;
 
 	if ( isset( $_REQUEST['saved'] ) )
@@ -283,7 +283,7 @@ function top_level_settings() {
 	<?php
 }
 
-class ImportData {
+class CheezCapImportData {
 	var $dict = array();
 }
 

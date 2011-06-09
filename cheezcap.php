@@ -14,16 +14,16 @@ require_once( dirname( __FILE__ ) . '/config.php' );
 $cap = new CheezCap();
 
 if ( ! defined( 'LOADED_CONFIG' ) ) {
-    add_action( 'admin_menu', 'cap_add_admin' );
+    add_action( 'admin_menu', 'cap_add_admin_page' );
     add_action( 'admin_init', 'cap_handle_admin_actions' );
     define( 'LOADED_CONFIG', 1 );
 }
 
-function cap_add_admin() {
+function cap_add_admin_page() {
 	global $themename, $req_cap_to_edit, $cap_menu_position, $cap_icon_url;
 	
 	$pgName = sprintf( __( '%s Settings' ), esc_html( $themename ) );
-	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', 'cheezcap', 'top_level_settings', isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
+	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', 'cheezcap', 'cap_display_admin_page', isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
 	add_action( "admin_print_scripts-$hook", 'cap_admin_js_libs' );
 	add_action( "admin_footer-$hook", 'cap_admin_js_footer' );
 	add_action( "admin_print_styles-$hook", 'cap_admin_css' );
@@ -41,7 +41,7 @@ function cap_handle_admin_actions() {
 		$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
 		$method = false;
 		$done = false;
-		$data = new ImportData();
+		$data = new CheezCapImportData();
 		
 		switch ( $action ) {
 			case 'save':
