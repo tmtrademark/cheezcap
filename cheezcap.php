@@ -11,7 +11,7 @@
 require_once( dirname( __FILE__ ) . '/library.php' );
 require_once( dirname( __FILE__ ) . '/config.php' );
 
-$cap = new autoconfig();
+$cap = new CheezCap();
 
 if ( ! defined( 'LOADED_CONFIG' ) ) {
     add_action( 'admin_menu', 'cap_add_admin' );

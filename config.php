@@ -17,35 +17,35 @@ function cap_get_options() {
 	$number_entries = array( 'Select a Number:', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20' );
 
 	return array(
-		new Group( 'First Group', 'firstGroup',
+		new CheezCapGroup( 'First Group', 'firstGroup',
 			array(
-				new BooleanOption(
+				new CheezCapBooleanOption(
 					'Simple Boolean Example',
 					'This will create a simple true/false switch with default of "true".',
 					'simple_boolean_example',
 					true
 				),
-				new TextOption(
+				new CheezCapTextOption(
 					'Simple Text Exmaple',
 					'This will create store a string value with a default of "Say Cheez!".',
 					'simple_text_example',
 					'Say Cheez!'
 				),
-				new TextOption(
+				new CheezCapTextOption(
 					'Text Area Exmaple',
 					'This text option is displayed as a Text Area',
 					'text_area_example',
 					'Sup Dawg?  I put an option in your option so that you would have options.',
 					true
 				),
-				new DropdownOption(
+				new CheezCapDropdownOption(
 					'Inline Options Dropdown Example',
 					'This dropdown creates its options using an inline array.',
 					'inline_options_dropdown_example',
 					array( 'Red', 'Yellow', 'Green' )
 					// Default index is 0, 0 == 'Red' in this case
 				),
-				new DropdownOption(
+				new CheezCapDropdownOption(
 					'Reusable Options Dropdown Example',
 					'This dropdown creates its options by reusing an array.',
 					'resuable_options_dropdown_example',
@@ -54,35 +54,35 @@ function cap_get_options() {
 				),
 			)
 		),
-		new Group( 'Another Group', 'anotherGroup',
+		new CheezCapGroup( 'Another Group', 'anotherGroup',
 			array(
-				new BooleanOption(
+				new CheezCapBooleanOption(
 					'Simple Boolean Example #2',
 					'This will create a simple true/false switch with default of "true".',
 					'simple_boolean_example2',
 					true
 				),
-				new TextOption(
+				new CheezCapTextOption(
 					'Simple Text Exmaple #2',
 					'This will create store a string value with a default of "Say Cheez!".',
 					'simple_text_example2',
 					'Say Cheez!'
 				),
-				new TextOption(
+				new CheezCapTextOption(
 					'Text Area Exmaple #2',
 					'This text option is displayed as a Text Area',
 					'text_area_example2',
 					'Sup Dawg?  I put an option in your option so that you would have options.',
 					true
 				),
-				new DropdownOption(
+				new CheezCapDropdownOption(
 					'Inline Options Dropdown Example #2',
 					'This dropdown creates its options using an inline array.',
 					'inline_options_dropdown_example2',
 					array( 'Red', 'Yellow', 'Green' ),
 					1 // Yellow
 				),
-				new DropdownOption(
+				new CheezCapDropdownOption(
 					'Reusable Options Dropdown Example #2',
 					'This dropdown creates its options by reusing an array.',
 					'resuable_options_dropdown_example2',
@@ -91,35 +91,35 @@ function cap_get_options() {
 				),
 			)
 		),
-		new Group( 'Yet Another', 'yetAnother',
+		new CheezCapGroup( 'Yet Another', 'yetAnother',
 			array(
-				new BooleanOption(
+				new CheezCapBooleanOption(
 					'Simple Boolean Example #3',
 					'This will create a simple true/false switch with default of "true".',
 					'simple_boolean_example3',
 					true
 				),
-				new TextOption(
+				new CheezCapTextOption(
 					'Simple Text Exmaple #3',
 					'This will create store a string value with a default of "Say Cheez!".',
 					'simple_text_example3',
 					'Say Cheez!'
 				),
-				new TextOption(
+				new CheezCapTextOption(
 					'Text Area Exmaple #3',
 					'This text option is displayed as a Text Area',
 					'text_area_example3',
 					'Sup Dawg?  I put an option in your option so that you would have options.',
 					true
 				),
-				new DropdownOption(
+				new CheezCapDropdownOption(
 					'Inline Options Dropdown Example #3',
 					'This dropdown creates its options using an inline array.',
 					'inline_options_dropdown_example3',
 					array( 'Red', 'Yellow', 'Green' ),
 					2 // Green
 				),
-				new DropdownOption(
+				new CheezCapDropdownOption(
 					'Reusable Options Dropdown Example #3',
 					'This dropdown creates its options by reusing an array.',
 					'resuable_options_dropdown_example3',

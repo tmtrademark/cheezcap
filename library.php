@@ -8,7 +8,7 @@
 // License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
 //
 
-class Group {
+class CheezCapGroup {
 	var $name;
 	var $id;
 	var $options;
@@ -36,7 +36,7 @@ class Group {
 	}
 }
 
-class Option {
+class CheezCapOption {
 	var $name;
 	var $desc;
 	var $id;
@@ -78,7 +78,7 @@ class Option {
 	}
 }
 
-class TextOption extends Option {
+class CheezCapTextOption extends CheezCapOption {
 	var $useTextArea;
 
 	function __construct( $_name, $_desc, $_id, $_std = '', $_useTextArea = false ) {
@@ -123,7 +123,7 @@ class TextOption extends Option {
 	}
 }
 
-class DropdownOption extends Option {
+class CheezCapDropdownOption extends CheezCapOption {
 	var $options;
 
 	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0 ) {
@@ -163,7 +163,7 @@ class DropdownOption extends Option {
 	}
 }
 
-class BooleanOption extends DropdownOption {
+class CheezCapBooleanOption extends CheezCapDropdownOption {
 	var $default;
 
 	function __construct( $_name, $_desc, $_id, $_default = false ) {
@@ -190,7 +190,7 @@ class BooleanOption extends DropdownOption {
 //
 // $cap->post_ratings is the same as get_bool_option("cap_post_ratings", false)
 //
-class autoconfig {
+class CheezCap {
 	private $data = false;
 	private $cache = array();
 
