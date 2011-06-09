@@ -228,7 +228,8 @@ class CheezCapImportData {
 }
 
 function cap_serialize_export( $data ) {
-	header( 'Content-disposition: attachment; filename=theme-export.txt' );
+	$filename = sprintf( '%s-%s-theme-export.txt', date( 'Y.m.d' ), sanitize_key( get_bloginfo( 'name' ) ) );
+	header( 'Content-disposition: attachment; filename=' . $filename );
 	echo serialize( $data );
 	exit();
 }
