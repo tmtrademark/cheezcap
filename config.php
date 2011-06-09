@@ -26,25 +26,19 @@ function cap_get_options() {
 					true
 				),
 				new CheezCapTextOption(
-					'Simple Text Exmaple',
+					'Simple Text Example',
 					'This will create store a string value with a default of "Say Cheez!".',
 					'simple_text_example',
 					'Say Cheez!'
 				),
 				new CheezCapTextOption(
-					'Text Area Exmaple',
+					'Text Area Example',
 					'This text option is displayed as a Text Area',
 					'text_area_example',
 					'Sup Dawg?  I put an option in your option so that you would have options.',
 					true
 				),
-				new CheezCapDropdownOption(
-					'Inline Options Dropdown Example',
-					'This dropdown creates its options using an inline array.',
-					'inline_options_dropdown_example',
-					array( 'Red', 'Yellow', 'Green' )
-					// Default index is 0, 0 == 'Red' in this case
-				),
+				new CheezCapDropdownOptionExample,
 				new CheezCapDropdownOption(
 					'Reusable Options Dropdown Example',
 					'This dropdown creates its options by reusing an array.',
@@ -63,13 +57,13 @@ function cap_get_options() {
 					true
 				),
 				new CheezCapTextOption(
-					'Simple Text Exmaple #2',
+					'Simple Text Example #2',
 					'This will create store a string value with a default of "Say Cheez!".',
 					'simple_text_example2',
 					'Say Cheez!'
 				),
 				new CheezCapTextOption(
-					'Text Area Exmaple #2',
+					'Text Area Example #2',
 					'This text option is displayed as a Text Area',
 					'text_area_example2',
 					'Sup Dawg?  I put an option in your option so that you would have options.',
@@ -100,13 +94,13 @@ function cap_get_options() {
 					true
 				),
 				new CheezCapTextOption(
-					'Simple Text Exmaple #3',
+					'Simple Text Example #3',
 					'This will create store a string value with a default of "Say Cheez!".',
 					'simple_text_example3',
 					'Say Cheez!'
 				),
 				new CheezCapTextOption(
-					'Text Area Exmaple #3',
+					'Text Area Example #3',
 					'This text option is displayed as a Text Area',
 					'text_area_example3',
 					'Sup Dawg?  I put an option in your option so that you would have options.',
