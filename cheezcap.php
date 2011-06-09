@@ -23,7 +23,7 @@ function cap_add_admin_page() {
 	global $themename, $req_cap_to_edit, $cap_menu_position, $cap_icon_url;
 	
 	$pgName = sprintf( __( '%s Settings' ), esc_html( $themename ) );
-	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', 'cheezcap', 'cap_display_admin_page', isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
+	$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', 'cheezcap', 'cap_admin_page_display', isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
 	add_action( "admin_print_scripts-$hook", 'cap_admin_js_libs' );
 	add_action( "admin_footer-$hook", 'cap_admin_js_footer' );
 	add_action( "admin_print_styles-$hook", 'cap_admin_css' );
@@ -71,6 +71,66 @@ function cap_handle_admin_actions() {
 				call_user_func( $done, $data );
 		}
 	}
+}
+
+function cap_admin_page_display() {
+	global $themename;
+
+	if ( isset( $_REQUEST['saved'] ) )
+		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings saved.' ) . '</strong></p></div>';
+	if ( isset( $_REQUEST['reset'] ) )
+		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings reset.' ) . '</strong></p></div>';
+	?>
+
+	<div class="wrap">
+		<h2><b><?php echo esc_html( $themename . ' Theme Options.' ); ?></b></h2>
+
+		<form method="post">
+
+			<div id="config-tabs">
+				<ul>
+	<?php
+	$groups = cap_get_options();
+	foreach( $groups as $group ) :
+	?>
+					<li><a href='<?php echo esc_attr( '#' . $group->id ); ?>'><?php echo esc_html( $group->name ); ?></a></li>
+	<?php
+	endforeach;
+	?>
+				</ul>
+	<?php
+	foreach( $groups as $group ) :
+	?>
+				<div id='<?php echo esc_attr( $group->id ); ?>'>
+	<?php
+					$group->WriteHtml();
+	?>
+				</div>
+	<?php
+	endforeach;
+	?>
+			</div>
+			<p class="submit alignleft">
+				<input type="hidden" name="action" value="save" />
+				<input name="save" type="submit" value="Save changes" />
+			</p>
+		</form>
+		<form enctype="multipart/form-data" method="post">
+			<p class="submit alignleft">
+				<input name="action" type="submit" value="Reset" />
+			</p>
+			<p class="submit alignleft" style='margin-left:20px'>
+				<input name="action" type="submit" value="Export" />
+			</p>
+			<p class="submit alignleft">
+				<input name="action" type="submit" value="Import" />
+				<input type="file" name="file" />
+			</p>
+		</form>
+		<div class="clear"></div>
+		<h2>Preview (updated when options are saved)</h2>
+		<iframe src="<?php echo esc_url( home_url( '?preview=true' ) ); ?>" width="100%" height="600" ></iframe>
+	<?php
 }
 
 function cap_admin_css() {
