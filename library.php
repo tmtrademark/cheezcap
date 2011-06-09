@@ -1,12 +1,12 @@
 <?php
-//
-// CheezCap - Cheezburger Custom Administration Panel
-// (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
-// LOL: http://cheezburger.com
-// Source: http://github.com/cheezburger/cheezcap/
-// Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
-// License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
-//
+/**
+ * CheezCap - Cheezburger Custom Administration Panel
+ * (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
+ * LOL: http://cheezburger.com
+ * Source: http://github.com/cheezburger/cheezcap/
+ * Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
+ * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 class CheezCapGroup {
 	var $name;
@@ -186,10 +186,11 @@ class CheezCapBooleanOption extends CheezCapDropdownOption {
 	}
 }
 
-// This class is the handy short cut for accessing config options
-//
-// $cap->post_ratings is the same as get_bool_option("cap_post_ratings", false)
-//
+/**
+ * This class is the handy short cut for accessing config options
+ *
+ * $cap->post_ratings is the same as get_bool_option("cap_post_ratings", false)
+ */
 class CheezCap {
 	private $data = false;
 	private $cache = array();

@@ -1,12 +1,12 @@
 <?php
-//
-// CheezCap - Cheezburger Custom Administration Panel
-// (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
-// LOL: http://cheezburger.com
-// Source: http://github.com/cheezburger/cheezcap/
-// Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
-// License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
-//
+/**
+ * CheezCap - Cheezburger Custom Administration Panel
+ * (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
+ * LOL: http://cheezburger.com
+ * Source: http://github.com/cheezburger/cheezcap/
+ * Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
+ * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 $themename = 'CheezCap'; // used on the title of the custom admin page
 $req_cap_to_edit = 'manage_options'; // the user capability that is required to access the CheezCap settings page
