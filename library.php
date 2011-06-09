@@ -13,7 +13,7 @@ class Group {
 	var $id;
 	var $options;
 
-	function Group( $_name, $_id, $_options ) {
+	function __construct( $_name, $_id, $_options ) {
 		$this->name = $_name;
 		$this->id = "cap_$_id";
 		$this->options = $_options;
@@ -43,7 +43,7 @@ class Option {
 	var $_key;
 	var $std;
 
-	function Option( $_name, $_desc, $_id, $_std ) {
+	function __construct( $_name, $_desc, $_id, $_std ) {
 		$this->name = $_name;
 		$this->desc = $_desc;
 		$this->id = "cap_$_id";
@@ -81,8 +81,8 @@ class Option {
 class TextOption extends Option {
 	var $useTextArea;
 
-	function TextOption( $_name, $_desc, $_id, $_std = '', $_useTextArea = false ) {
-		$this->Option( $_name, $_desc, $_id, $_std );
+	function __construct( $_name, $_desc, $_id, $_std = '', $_useTextArea = false ) {
+		parent::__construct( $_name, $_desc, $_id, $_std );
 		$this->useTextArea = $_useTextArea;
 	}
 
@@ -126,8 +126,8 @@ class TextOption extends Option {
 class DropdownOption extends Option {
 	var $options;
 
-	function DropdownOption( $_name, $_desc, $_id, $_options, $_stdIndex = 0 ) {
-		$this->Option( $_name, $_desc, $_id, $_stdIndex );
+	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0 ) {
+		parent::__construct( $_name, $_desc, $_id, $_stdIndex );
 		$this->options = $_options;
 	}
 
@@ -166,9 +166,9 @@ class DropdownOption extends Option {
 class BooleanOption extends DropdownOption {
 	var $default;
 
-	function BooleanOption( $_name, $_desc, $_id, $_default = false ) {
+	function __construct( $_name, $_desc, $_id, $_default = false ) {
 		$this->default = $_default;
-		$this->DropdownOption( $_name, $_desc, $_id, array( 'Disabled', 'Enabled' ), $_default ? 1 : 0 );
+		parent::__construct( $_name, $_desc, $_id, array( 'Disabled', 'Enabled' ), $_default ? 1 : 0 );
 	}
 
 	function get() {
