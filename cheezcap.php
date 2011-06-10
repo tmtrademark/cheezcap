@@ -170,7 +170,7 @@ class CheezCap {
 		$message_class = ( $type != 'error' ) ? 'updated' : $type;
 		
 		if( $message )
-			echo sprintf( '<div id="message" class="%2$s fade"><p><strong>%1$s</strong></p></div>', sprintf( $message, $theme_name ), $message_class );
+			echo sprintf( '<div id="message" class="%2$s fade"><p><strong>%1$s</strong></p></div>', sprintf( $message, esc_html( $theme_name ) ), $message_class );
 	}
 	
 	function display_admin_page() {
@@ -184,7 +184,7 @@ class CheezCap {
 		?>
 	
 		<div class="wrap">
-			<h2><b><?php echo esc_html( $themename . ' Theme Options.' ); ?></b></h2>
+			<h2><?php global $title; echo $title; ?></h2>
 	
 			<form method="post">
 	
