@@ -129,9 +129,16 @@ class CheezCap {
 					break;
 				
 				case 'import':
-					$method = 'import';
-					$data = unserialize( file_get_contents( $_FILES['file']['tmp_name'] ) );
-					$redirect = array( 'success' => $method );
+					
+					$data = @ unserialize( file_get_contents( $_FILES['file']['tmp_name'] ) ); // We're using @ to suppress the E_NOTICE
+					
+					if( $data && is_a( $data, 'CheezCapImportData' ) ) {
+						$method = 'import';
+						$redirect = array( 'success' => $method );
+					} else {
+						$redirect = array( 'error' => 'import' );
+					}
+					
 					break;
 			}
 	
