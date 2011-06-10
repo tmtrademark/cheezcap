@@ -53,7 +53,7 @@ class CheezCap {
 			return;
 
 		$this->data = array();
-		$options = cap_get_options();
+		$options = $this->get_options();
 
 		foreach ( $options as $group ) {
 			foreach( $group->options as $option ) {
@@ -69,10 +69,13 @@ class CheezCap {
 			return $this->cache[$name];
 
 		$option = $this->data[$name];
-		if ( empty( $option ) )
+		if ( empty( $option ) && defined( 'WP_DEBUG' ) && WP_DEBUG )
 			throw new Exception( "Unknown key: $name" );
-
-		$value = $this->cache[$name] = $option->get();
+		elseif( empty( $option ) )
+			$value = '';
+		else
+			$value = $this->cache[$name] = $option->get();
+		
 		return $value;
 	}
 	
