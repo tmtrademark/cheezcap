@@ -11,8 +11,6 @@
 require_once( dirname( __FILE__ ) . '/library.php' );
 require_once( dirname( __FILE__ ) . '/config.php' );
 
-$cap = new CheezCap();
-
 /**
  * This class is the handy short cut for accessing config options
  *
@@ -21,8 +19,22 @@ $cap = new CheezCap();
 class CheezCap {
 	private $data = false;
 	private $cache = array();
+	private $settings = array();
+	private $options = array();
 
-	function __construct() {
+	function __construct( $options, $settings = array() ) {
+		$settings = wp_parse_args( $settings, array( 
+			'themename' => 'CheezCap',
+			'req_cap_to_edit' => 'manage_options',
+			'cap_menu_position' => 99,
+			'cap_icon_url' => '',
+		) );
+		
+		$settings['themeslug'] = sanitize_key( $settings['themename'] );
+		
+		$this->settings = $settings;
+		$this->options = $options;
+		
 		add_action( 'admin_menu', array( $this, 'add_admin_page' ) );
     	add_action( 'admin_init', array( $this, 'handle_admin_actions' ) );
 	}
@@ -55,27 +67,39 @@ class CheezCap {
 		return $value;
 	}
 	
+	public function get_options() {
+		return $this->options;
+	}
+	
+	public function get_settings() {
+		return $this->settings;
+	}
+	
+	public function get_setting( $setting, $default = '' ) {
+		if( isset( $this->settings[$setting] ) )
+			return $this->settings[$setting];
+		return $default;
+	}
+	
 	// UI-related functions
 	function add_admin_page() {
-		global $themename, $req_cap_to_edit, $cap_menu_position, $cap_icon_url;
+		$page_name = sprintf( __( '%s Settings' ), esc_html( $this->get_setting( 'themename' ) ) );
+		$page_hook = add_menu_page( $page_name, $page_name, $this->get_setting( 'req_cap_to_edit' ), $this->get_setting( 'themeslug' ), array( $this, 'display_admin_page' ), $this->get_setting( 'cap_icon_url' ), $this->get_setting( 'cap_menu_position' ) );
 		
-		$pgName = sprintf( __( '%s Settings' ), esc_html( $themename ) );
-		$hook = add_menu_page( $pgName, $pgName, isset( $req_cap_to_edit ) ? $req_cap_to_edit : 'manage_options', 'cheezcap', array( $this, 'display_admin_page' ), isset( $cap_icon_url ) ? $cap_icon_url : $default, isset( $cap_menu_position ) ? $cap_menu_position : $default );
-		
-		add_action( "admin_print_scripts-$hook", array( $this, 'admin_js_libs' ) );
-		add_action( "admin_footer-$hook", array( $this, 'admin_js_footer' ) );
-		add_action( "admin_print_styles-$hook", array( $this, 'admin_css' ) );
+		add_action( "admin_print_scripts-$page_hook", array( $this, 'admin_js_libs' ) );
+		add_action( "admin_footer-$page_hook", array( $this, 'admin_js_footer' ) );
+		add_action( "admin_print_styles-$page_hook", array( $this, 'admin_css' ) );
 	}
 	
 	function handle_admin_actions() {
-		global $plugin_page, $req_cap_to_edit;
+		global $plugin_page;
 		
-		if ( $plugin_page == 'cheezcap' ) {
+		if ( $plugin_page == $this->get_setting( 'themeslug' ) ) {
 			
-			if ( ! current_user_can ( $req_cap_to_edit ) )
+			if ( ! current_user_can ( $this->get_setting( 'req_cap_to_edit' ) ) )
 				return;
 			
-			$options = cap_get_options();
+			$options = $this->get_options();
 			$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
 			$method = false;
 			$done = false;
@@ -112,7 +136,7 @@ class CheezCap {
 	}
 	
 	function display_admin_page() {
-		global $themename;
+		$themename = $this->get_setting( 'themename' );
 	
 		if ( isset( $_REQUEST['saved'] ) )
 			echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings saved.' ) . '</strong></p></div>';
@@ -128,7 +152,7 @@ class CheezCap {
 				<div id="config-tabs">
 					<ul>
 		<?php
-		$groups = cap_get_options();
+		$groups = $this->get_options();
 		foreach( $groups as $group ) :
 		?>
 						<li><a href='<?php echo esc_attr( '#' . $group->id ); ?>'><?php echo esc_html( $group->name ); ?></a></li>

@@ -8,15 +8,9 @@
  * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-$themename = 'CheezCap'; // used on the title of the custom admin page
-$req_cap_to_edit = 'manage_options'; // the user capability that is required to access the CheezCap settings page
-$cap_menu_position = 99; // OPTIONAL: This value represents the order in the dashboard menu that the CheezCap menu will display in. Larger numbers push it further down.
-$cap_icon_url = ""; // OPTIONAL: Path to a custom icon for the CheezCap menu item. ex. $cap_icon_url = WP_CONTENT_URL . '/your-theme-name/images/awesomeicon.png'; Image size should be around 20px x 20px.
+$number_entries = array( 'Select a Number:', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20' );
 
-function cap_get_options() {
-	$number_entries = array( 'Select a Number:', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20' );
-
-	return array(
+$cap = new CheezCap( array(
 		new CheezCapGroup( 'First Group', 'firstGroup',
 			array(
 				new CheezCapBooleanOption(
@@ -121,5 +115,10 @@ function cap_get_options() {
 				),
 			)
 		)
-	);
-}
+	), array(
+		'themename' => 'CheezCap', // used on the title of the custom admin page
+		'req_cap_to_edit' => 'manage_options', // the user capability that is required to access the CheezCap settings page
+		'cap_menu_position' => 99, // OPTIONAL: This value represents the order in the dashboard menu that the CheezCap menu will display in. Larger numbers push it further down.
+		'cap_icon_url' => '', // OPTIONAL: Path to a custom icon for the CheezCap menu item. ex. $cap_icon_url = WP_CONTENT_URL . '/your-theme-name/images/awesomeicon.png'; Image size should be around 20px x 20px.
+	)
+);
