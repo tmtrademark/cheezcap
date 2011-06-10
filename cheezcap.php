@@ -215,7 +215,7 @@ class CheezCap {
 					
 					<?php foreach( $groups as $group ) : ?>
 						<div id='<?php echo esc_attr( $group->id ); ?>'>
-							<?php $group->WriteHtml(); ?>
+							<?php $group->write_html(); ?>
 						</div>
 					<?php endforeach; ?>
 				</div>
