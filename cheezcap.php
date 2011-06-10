@@ -118,17 +118,17 @@ class CheezCap {
 					$redirect = array( 'success' => $method );
 					break;
 				
-				case 'Reset':
+				case 'reset':
 					$method = 'reset';
 					$redirect = array( 'success' => $method );
 					break;
 				
-				case 'Export':
+				case 'export':
 					$method = 'export';
 					$done = array( $this, 'serialize_export' );
 					break;
 				
-				case 'Import':
+				case 'import':
 					$method = 'import';
 					$data = unserialize( file_get_contents( $_FILES['file']['tmp_name'] ) );
 					$redirect = array( 'success' => $method );
