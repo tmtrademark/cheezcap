@@ -142,6 +142,15 @@ class CheezCapDropdownOption extends CheezCapOption {
 		$this->options = $_options;
 	}
 
+	function Update( $ignored ) {
+		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
+		$value = stripslashes_deep( $value );
+		if( ! in_array( $value, $this->options ) )
+			$this->Reset();
+		else
+			$this->save( $value );
+	}
+
 	function WriteHtml() {
 		?>
 		<tr valign="top">
