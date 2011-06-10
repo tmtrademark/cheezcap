@@ -13,6 +13,44 @@ require_once( dirname( __FILE__ ) . '/config.php' );
 
 $cap = new CheezCap();
 
+/**
+ * This class is the handy short cut for accessing config options
+ *
+ * $cap->post_ratings is the same as get_bool_option("cap_post_ratings", false)
+ */
+class CheezCap {
+	private $data = false;
+	private $cache = array();
+
+	function init() {
+		if ( $this->data )
+			return;
+
+		$this->data = array();
+		$options = cap_get_options();
+
+		foreach ( $options as $group ) {
+			foreach( $group->options as $option ) {
+				$this->data[$option->_key] = $option;
+			}
+		}
+	}
+
+	public function __get( $name ) {
+		$this->init();
+
+		if ( array_key_exists( $name, $this->cache ) )
+			return $this->cache[$name];
+
+		$option = $this->data[$name];
+		if ( empty( $option ) )
+			throw new Exception( "Unknown key: $name" );
+
+		$value = $this->cache[$name] = $option->get();
+		return $value;
+	}
+}
+
 if ( ! defined( 'LOADED_CONFIG' ) ) {
     add_action( 'admin_menu', 'cap_add_admin_page' );
     add_action( 'admin_init', 'cap_handle_admin_actions' );
