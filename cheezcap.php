@@ -106,7 +106,7 @@ class CheezCap {
 				return;
 			
 			$options = $this->get_options();
-			$action = isset( $_REQUEST['action'] ) ? strtolower( $_REQUEST['action'] ) : '';
+			$action = isset( $_POST['action'] ) ? strtolower( $_POST['action'] ) : '';
 			$method = false;
 			$done = false;
 			$redirect = false;
