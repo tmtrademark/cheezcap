@@ -20,7 +20,7 @@ class CheezCapGroup {
 		$this->options = $_options;
 	}
 
-	function WriteHtml() {
+	function write_html() {
 		?>
 		<table class="form-table" width="100%">
 			<tr valign="top">
@@ -29,7 +29,7 @@ class CheezCapGroup {
 			</tr>
 			<?php
 			for ( $i=0; $i < count( $this->options ); $i++ ) {
-				$this->options[$i]->WriteHtml();
+				$this->options[$i]->write_html();
 			}
 			?>
 		</table>
@@ -52,25 +52,25 @@ class CheezCapOption {
 		$this->std = $_std;
 	}
 
-	function WriteHtml() {
+	function write_html() {
 	}
 
-	function Update( $ignored = '' ) {
+	function update( $ignored = '' ) {
 		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
 		$value = stripslashes_deep( $value );
 		$this->save( $value );
 	}
 
-	function Reset( $ignored = '' ) {
+	function reset( $ignored = '' ) {
 		$this->save( $this->std );
 	}
 
-	function Import( $data ) {
+	function import( $data ) {
 		if ( array_key_exists( $this->id, $data->dict ) )
 			$this->save( $data->dict[$this->id] );
 	}
 
-	function Export( $data ) {
+	function export( $data ) {
 		$data->dict[$this->id] = get_option( $this->id );
 	}
 
@@ -91,7 +91,7 @@ class CheezCapTextOption extends CheezCapOption {
 		$this->useTextArea = $_useTextArea;
 	}
 
-	function WriteHtml() {
+	function write_html() {
 		$stdText = $this->std;
 
 		$stdTextOption = get_option( $this->id );
@@ -143,16 +143,16 @@ class CheezCapDropdownOption extends CheezCapOption {
 		$this->options_labels = $_options_labels;
 	}
 
-	function Update( $ignored = '' ) {
+	function update( $ignored = '' ) {
 		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
 		$value = stripslashes_deep( $value );
 		if( ! in_array( $value, $this->options ) )
-			$this->Reset();
+			$this->reset();
 		else
 			$this->save( $value );
 	}
 
-	function WriteHtml() {
+	function write_html() {
 		?>
 		<tr valign="top">
 			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name ); ?></label></th>
@@ -179,7 +179,7 @@ class CheezCapDropdownOption extends CheezCapOption {
 
 	function get() {
 		$value = get_option( $this->id, $this->std );
-        	if ( strtolower( $value ) == 'disabled' )
+		if ( strtolower( $value ) == 'disabled' )
 			return false;
 		return $value;
 	}
@@ -201,6 +201,8 @@ class CheezCapBooleanOption extends CheezCapDropdownOption {
 			case 'true':
 			case 'enable':
 			case 'enabled':
+			case '1':
+			case 1:
 				return true;
 			default:
 				return false;
