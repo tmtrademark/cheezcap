@@ -9,7 +9,9 @@
  */
 
 require_once( dirname( __FILE__ ) . '/library.php' );
-require_once( dirname( __FILE__ ) . '/config-sample.php' );
+
+if( defined( 'CHEEZCAP_DEBUG' ) && CHEEZCAP_DEBUG )
+	require_once( dirname( __FILE__ ) . '/config-sample.php' );
 
 /**
  * This class is the handy short cut for accessing config options
