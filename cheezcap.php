@@ -234,9 +234,9 @@ class CheezCap {
 					<?php submit_button( __( 'Reset' ), 'delete', 'action', false ); ?>
 				</p>
 				<p class="submit alignright">
-					<?php submit_button( __( 'Export' ), 'secondary', 'action', false ); ?>
-					<?php submit_button( __( 'Import' ), 'secondary', 'action', false ); ?>
-					<input type="file" name="file" />
+					<?php submit_button( __( 'Export' ), 'secondary export', 'action', false ); ?>
+					<?php submit_button( __( 'Import' ), 'secondary import', 'action', false ); ?>
+					<input type="file" id="cheezcap-import-file" name="file" />
 				</p>
 				<?php wp_nonce_field( $themeslug . '-action', $themeslug . '-nonce' ); ?>
 			</form>
@@ -260,6 +260,16 @@ class CheezCap {
 		<script type="text/javascript">
 			jQuery(document).ready(function($) {
 				$("#config-tabs").tabs();
+				$('input[name="action"]').click(function(e) {
+					if( ! $(this).hasClass('import') )
+						return true;
+					
+					var file = $('input#cheezcap-import-file').val();
+					if( ! file || file.substring( file.length - 3 ) != 'txt' ) {
+						alert( '<?php echo esc_js( __( 'That\'s not a valid CheezCap Export file!' ) ); ?>' );
+						return false;
+					}
+				});
 			});
 		</script>
 		<?php
