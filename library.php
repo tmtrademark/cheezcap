@@ -55,7 +55,8 @@ class CheezCapOption {
 	}
 
 	function Update( $ignored ) {
-		$value = stripslashes_deep( $_POST[$this->id] );
+		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
+		$value = stripslashes_deep( $value );
 		update_option( $this->id, $value );
 	}
 
