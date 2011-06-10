@@ -115,20 +115,23 @@ class CheezCap {
 			switch ( $action ) {
 				case 'save':
 					$method = 'update';
-					$redirect = true;
+					$redirect = array( 'success' => $method );
 					break;
+				
 				case 'Reset':
 					$method = 'reset';
-					$redirect = true;
+					$redirect = array( 'success' => $method );
 					break;
+				
 				case 'Export':
 					$method = 'export';
 					$done = array( $this, 'serialize_export' );
 					break;
+				
 				case 'Import':
 					$method = 'import';
 					$data = unserialize( file_get_contents( $_FILES['file']['tmp_name'] ) );
-					$redirect = true;
+					$redirect = array( 'success' => $method );
 					break;
 			}
 	
@@ -141,10 +144,11 @@ class CheezCap {
 				
 				if ( $done )
 					call_user_func( $done, $data );
-					
-				if( $redirect )
-					wp_redirect( add_query_arg( $method, '', menu_page_url( $plugin_page, false ) ) );
 			}
+			
+			if( ! empty( $redirect ) )
+				wp_redirect( add_query_arg( $redirect, menu_page_url( $plugin_page, false ) ) );
+				
 		}
 	}
 	
