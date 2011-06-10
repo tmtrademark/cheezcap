@@ -95,7 +95,7 @@ class CheezCapTextOption extends CheezCapOption {
 
 		?>
 		<tr valign="top">
-			<th scope="row"><?php echo esc_html( $this->name . ':' ); ?></th>
+			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name . ':' ); ?></label></th>
 		<?php
 		$commentWidth = 2;
 		if ( $this->useTextArea ) :
@@ -111,7 +111,7 @@ class CheezCapTextOption extends CheezCapOption {
 		?>
 			</td>
 		</tr>
-                <tr valign="top"><td colspan="<?php echo absint( $commentWidth ); ?>"><small><?php echo esc_html( $this->desc ); ?></small></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
+                <tr valign="top"><td colspan="<?php echo absint( $commentWidth ); ?>"><label for="<?php echo $this->id; ?>"><small><?php echo esc_html( $this->desc ); ?></small></label></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
 		<?php
 	}
 
@@ -134,7 +134,7 @@ class CheezCapDropdownOption extends CheezCapOption {
 	function WriteHtml() {
 		?>
 		<tr valign="top">
-			<th scope="row"><?php echo esc_html( $this->name ); ?></th>
+			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name ); ?></label></th>
 			<td>
 				<select name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>">
 		<?php
@@ -149,7 +149,7 @@ class CheezCapDropdownOption extends CheezCapOption {
 		</tr>
 		<tr valign="top">
 			<td colspan=2>
-				<small><?php echo esc_html( $this->desc ); ?></small><hr />
+				<label for="<?php echo $this->id; ?>"><small><?php echo esc_html( $this->desc ); ?></small></label><hr />
 			</td>
 		</tr>
 		<?php
