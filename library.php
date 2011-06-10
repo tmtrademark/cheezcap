@@ -24,8 +24,8 @@ class CheezCapGroup {
 		?>
 		<table class="form-table" width="100%">
 			<tr valign="top">
-				<th scope="row">Option</th>
-				<th scope="row">Value</th>
+				<th scope="row"><?php _e( 'Option', 'cheezcap' ); ?></th>
+				<th scope="row"><?php _e( 'Value', 'cheezcap' ); ?></th>
 			</tr>
 			<?php
 			for ( $i=0; $i < count( $this->options ); $i++ ) {

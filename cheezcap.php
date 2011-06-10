@@ -96,7 +96,7 @@ class CheezCap {
 	
 	// UI-related functions
 	function add_admin_page() {
-		$page_name = sprintf( __( '%s Settings' ), esc_html( $this->get_setting( 'themename' ) ) );
+		$page_name = sprintf( __( '%s Settings', 'cheezcap' ), esc_html( $this->get_setting( 'themename' ) ) );
 		$page_hook = add_menu_page( $page_name, $page_name, $this->get_setting( 'req_cap_to_edit' ), $this->get_setting( 'themeslug' ), array( $this, 'display_admin_page' ), $this->get_setting( 'cap_icon_url' ), $this->get_setting( 'cap_menu_position' ) );
 		
 		add_action( "admin_print_scripts-$page_hook", array( $this, 'admin_js_libs' ) );
@@ -222,24 +222,24 @@ class CheezCap {
 				
 				<p class="submit alignleft">
 					<input type="hidden" name="action" value="save" />
-					<?php submit_button( __( 'Save Changes' ), 'primary', 'save', false ); ?>
+					<?php submit_button( __( 'Save Changes', 'cheezcap' ), 'primary', 'save', false ); ?>
 				</p>
 				<?php wp_nonce_field( $themeslug . '-action', $themeslug . '-nonce' ); ?>
 				
 			</form>
 			<form enctype="multipart/form-data" method="post">
 				<p class="submit alignleft">
-					<?php submit_button( __( 'Reset' ), 'delete', 'action', false ); ?>
+					<?php submit_button( __( 'Reset', 'cheezcap' ), 'delete', 'action', false ); ?>
 				</p>
 				<p class="submit alignright">
-					<?php submit_button( __( 'Export' ), 'secondary export', 'action', false ); ?>
-					<?php submit_button( __( 'Import' ), 'secondary import', 'action', false ); ?>
+					<?php submit_button( __( 'Export', 'cheezcap' ), 'secondary export', 'action', false ); ?>
+					<?php submit_button( __( 'Import', 'cheezcap' ), 'secondary import', 'action', false ); ?>
 					<input type="file" id="cheezcap-import-file" name="file" />
 				</p>
 				<?php wp_nonce_field( $themeslug . '-action', $themeslug . '-nonce' ); ?>
 			</form>
 			<div class="clear"></div>
-			<h2>Preview (updated when options are saved)</h2>
+			<h2><?php _e( 'Preview (updated when options are saved)', 'cheezcap' ); ?></h2>
 			<iframe src="<?php echo esc_url( home_url( '?preview=true' ) ); ?>" width="100%" height="600" ></iframe>
 		<?php
 	}
@@ -264,7 +264,7 @@ class CheezCap {
 					
 					var file = $('input#cheezcap-import-file').val();
 					if( ! file || file.substring( file.length - 3 ) != 'txt' ) {
-						alert( '<?php echo esc_js( __( 'That\'s not a valid CheezCap Export file!' ) ); ?>' );
+						alert( '<?php echo esc_js( __( 'That\'s not a valid CheezCap Export file!', 'cheezcap' ) ); ?>' );
 						return false;
 					}
 				});
@@ -276,12 +276,12 @@ class CheezCap {
 	function get_default_messages() {
 		return array( 
 			'success' => array(
-				'update' => __( 'Sweet! The settings for %s were saved!' ),
-				'reset' => __( 'Yay! The settings for %s were reset!' ),
-				'import' => __( 'Woo! The settings for %s were imported!' )
+				'update' => __( 'Sweet! The settings for %s were saved!', 'cheezcap' ),
+				'reset' => __( 'Yay! The settings for %s were reset!', 'cheezcap' ),
+				'import' => __( 'Woo! The settings for %s were imported!', 'cheezcap' )
 			),
 			'error' => array(
-				'import' => 'That doesn\'t look like a CheezCap Export file. Homie don\'t play that!',
+				'import' => __( 'That doesn\'t look like a CheezCap Export file. Homie don\'t play that!', 'cheezcap' ),
 			)
 		);
 	}
