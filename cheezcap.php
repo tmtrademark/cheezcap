@@ -103,13 +103,21 @@ class CheezCap {
 	function handle_admin_actions() {
 		global $plugin_page;
 		
-		if ( $plugin_page == $this->get_setting( 'themeslug' ) ) {
+		$themeslug = $this->get_setting( 'themeslug' );
+		
+		if ( $plugin_page == $themeslug ) {
+			
+			$action = isset( $_POST['action'] ) ? strtolower( $_POST['action'] ) : '';
+			
+			if( ! $action )
+				return;
+			
+			check_admin_referer( $themeslug . '-action', $themeslug . '-nonce' );
 			
 			if ( ! current_user_can ( $this->get_setting( 'req_cap_to_edit' ) ) )
 				return;
 			
 			$options = $this->get_options();
-			$action = isset( $_POST['action'] ) ? strtolower( $_POST['action'] ) : '';
 			$method = false;
 			$done = false;
 			$redirect = false;
@@ -175,6 +183,7 @@ class CheezCap {
 	
 	function display_admin_page() {
 		$themename = $this->get_setting( 'themename' );
+		$themeslug = $this->get_setting( 'themeslug' );
 		
 		if ( isset( $_GET['success'] ) )
 			$this->display_message( 'success' );
@@ -215,7 +224,7 @@ class CheezCap {
 					<input type="hidden" name="action" value="save" />
 					<?php submit_button( __( 'Save Changes' ), 'primary', 'save', false ); ?>
 				</p>
-				<?php wp_nonce_field( $themeslug . '', $themeslug ); ?>
+				<?php wp_nonce_field( $themeslug . '-action', $themeslug . '-nonce' ); ?>
 			</form>
 			<form enctype="multipart/form-data" method="post">
 				<p class="submit alignleft">
@@ -226,6 +235,7 @@ class CheezCap {
 					<?php submit_button( __( 'Import' ), 'secondary', 'action', false ); ?>
 					<input type="file" name="file" />
 				</p>
+				<?php wp_nonce_field( $themeslug . '-action', $themeslug . '-nonce' ); ?>
 			</form>
 			<div class="clear"></div>
 			<h2>Preview (updated when options are saved)</h2>
