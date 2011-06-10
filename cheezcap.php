@@ -246,11 +246,9 @@ class CheezCap {
 	function admin_js_footer() {
 		?>
 		<script type="text/javascript">
-		/* <![CDATA[ */
 			jQuery(document).ready(function($) {
 				$("#config-tabs").tabs();
 			});
-		/* ]]> */
 		</script>
 		<?php
 	}
