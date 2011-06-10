@@ -189,10 +189,3 @@ class CheezCapBooleanOption extends CheezCapDropdownOption {
 class CheezCapImportData {
 	var $dict = array();
 }
-
-function cap_serialize_export( $data ) {
-	$filename = sprintf( '%s-%s-theme-export.txt', date( 'Y.m.d' ), sanitize_key( get_bloginfo( 'name' ) ) );
-	header( 'Content-disposition: attachment; filename=' . $filename );
-	echo serialize( $data );
-	exit();
-}
