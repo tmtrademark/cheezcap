@@ -5,6 +5,7 @@
  * LOL: http://cheezburger.com
  * Source: http://github.com/cheezburger/cheezcap
  * Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
+ * UnLOLs by Mo Jangda (batmoo@gmail.com)
  * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
  */
 
