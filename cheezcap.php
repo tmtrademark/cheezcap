@@ -109,14 +109,17 @@ class CheezCap {
 			$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
 			$method = false;
 			$done = false;
+			$redirect = false;
 			$data = new CheezCapImportData();
 			
 			switch ( $action ) {
 				case 'save':
 					$method = 'Update';
+					$redirect = true;
 					break;
 				case 'Reset':
 					$method = 'Reset';
+					$redirect = true;
 					break;
 				case 'Export':
 					$method = 'Export';
@@ -125,6 +128,7 @@ class CheezCap {
 				case 'Import':
 					$method = 'Import';
 					$data = unserialize( file_get_contents( $_FILES['file']['tmp_name'] ) );
+					$redirect = true;
 					break;
 			}
 	
@@ -137,6 +141,9 @@ class CheezCap {
 				
 				if ( $done )
 					call_user_func( $done, $data );
+					
+				if( $redirect )
+					wp_redirect( add_query_arg( $method, '', menu_page_url( $plugin_page, false ) ) );
 			}
 		}
 	}
