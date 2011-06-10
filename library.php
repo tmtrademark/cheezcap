@@ -58,20 +58,24 @@ class CheezCapOption {
 	function Update( $ignored ) {
 		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
 		$value = stripslashes_deep( $value );
-		update_option( $this->id, $value );
+		$this->save( $value );
 	}
 
 	function Reset( $ignored ) {
-		update_option( $this->id, $this->std );
+		$this->save( $this->std );
 	}
 
 	function Import( $data ) {
 		if ( array_key_exists( $this->id, $data->dict ) )
-			update_option( $this->id, $data->dict[$this->id] );
+			$this->save( $data->dict[$this->id] );
 	}
 
 	function Export( $data ) {
 		$data->dict[$this->id] = get_option( $this->id );
+	}
+
+	function save( $value ) {
+		update_option( $this->id, $value );
 	}
 
 	function get() {
