@@ -213,18 +213,17 @@ class CheezCap {
 				</div>
 				<p class="submit alignleft">
 					<input type="hidden" name="action" value="save" />
-					<input name="save" type="submit" value="Save changes" />
+					<?php submit_button( __( 'Save Changes' ), 'primary', 'save', false ); ?>
 				</p>
+				<?php wp_nonce_field( $themeslug . '', $themeslug ); ?>
 			</form>
 			<form enctype="multipart/form-data" method="post">
 				<p class="submit alignleft">
-					<input name="action" type="submit" value="Reset" />
+					<?php submit_button( __( 'Reset' ), 'delete', 'action', false ); ?>
 				</p>
-				<p class="submit alignleft" style='margin-left:20px'>
-					<input name="action" type="submit" value="Export" />
-				</p>
-				<p class="submit alignleft">
-					<input name="action" type="submit" value="Import" />
+				<p class="submit alignright">
+					<?php submit_button( __( 'Export' ), 'secondary', 'action', false ); ?>
+					<?php submit_button( __( 'Import' ), 'secondary', 'action', false ); ?>
 					<input type="file" name="file" />
 				</p>
 			</form>
