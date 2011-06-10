@@ -23,6 +23,8 @@ class CheezCap {
 	private $cache = array();
 	private $settings = array();
 	private $options = array();
+	
+	private $messages = array();
 
 	function __construct( $options, $settings = array() ) {
 		$settings = wp_parse_args( $settings, array( 
@@ -40,6 +42,7 @@ class CheezCap {
 		
 		$this->settings = $settings;
 		$this->options = $options;
+		$this->messages = $this->get_default_messages();
 		
 		add_action( 'admin_menu', array( $this, 'add_admin_page' ) );
     	add_action( 'admin_init', array( $this, 'handle_admin_actions' ) );
@@ -159,13 +162,25 @@ class CheezCap {
 		}
 	}
 	
+	function display_message( $type ) {
+		$theme_name = $this->get_setting( 'themename' );
+		$message_key = sanitize_key( $_GET[ $type ] );
+		$message = isset( $this->messages[$type][$message_key] ) ? $this->messages[$type][$message_key] : '';
+		
+		$message_class = ( $type != 'error' ) ? 'updated' : $type;
+		
+		if( $message )
+			echo sprintf( '<div id="message" class="%2$s fade"><p><strong>%1$s</strong></p></div>', sprintf( $message, $theme_name ), $message_class );
+	}
+	
 	function display_admin_page() {
 		$themename = $this->get_setting( 'themename' );
-	
-		if ( isset( $_REQUEST['saved'] ) )
-			echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings saved.' ) . '</strong></p></div>';
-		if ( isset( $_REQUEST['reset'] ) )
-			echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings reset.' ) . '</strong></p></div>';
+		
+		if ( isset( $_GET['success'] ) )
+			$this->display_message( 'success' );
+		elseif ( isset( $_GET['error'] ) )
+			$this->display_message( 'error' );
+		
 		?>
 	
 		<div class="wrap">
@@ -238,6 +253,19 @@ class CheezCap {
 		/* ]]> */
 		</script>
 		<?php
+	}
+	
+	function get_default_messages() {
+		return array( 
+			'success' => array(
+				'update' => __( 'Sweet! The settings for %s were saved!' ),
+				'reset' => __( 'Yay! The settings for %s were reset!' ),
+				'import' => __( 'Woo! The settings for %s were imported!' )
+			),
+			'error' => array(
+				'import' => 'That doesn\'t look like a CheezCap Export file. Homie don\'t play that!',
+			)
+		);
 	}
 	
 	function serialize_export( $data ) {
