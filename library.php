@@ -55,13 +55,13 @@ class CheezCapOption {
 	function WriteHtml() {
 	}
 
-	function Update( $ignored ) {
+	function Update( $ignored = '' ) {
 		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
 		$value = stripslashes_deep( $value );
 		$this->save( $value );
 	}
 
-	function Reset( $ignored ) {
+	function Reset( $ignored = '' ) {
 		$this->save( $this->std );
 	}
 
@@ -143,7 +143,7 @@ class CheezCapDropdownOption extends CheezCapOption {
 		$this->options_labels = $_options_labels;
 	}
 
-	function Update( $ignored ) {
+	function Update( $ignored = '' ) {
 		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
 		$value = stripslashes_deep( $value );
 		if( ! in_array( $value, $this->options ) )
