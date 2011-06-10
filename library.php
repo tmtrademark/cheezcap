@@ -91,6 +91,10 @@ class CheezCapTextOption extends CheezCapOption {
 		$this->useTextArea = $_useTextArea;
 	}
 
+	function save( $value ) {
+		parent::save( $this->sanitize( $value ) );
+	}
+
 	function write_html() {
 		$stdText = $this->std;
 
@@ -126,6 +130,13 @@ class CheezCapTextOption extends CheezCapOption {
 		<?php
 	}
 
+	function sanitize( $value ) {
+		if( $this->useTextArea )
+			return wp_filter_post_kses( $value );
+		else
+			return strip_tags( $value );
+	}
+
 	function get() {
 		$value = get_option( $this->id );
 		if ( empty( $value ) )
@@ -138,18 +149,18 @@ class CheezCapDropdownOption extends CheezCapOption {
 	var $options;
 
 	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0, $_options_labels = array() ) {
+		if( ! isset( $_options[$_stdIndex] ) )
+			$_stdIndex = 0;
+			
 		parent::__construct( $_name, $_desc, $_id, $_stdIndex );
 		$this->options = $_options;
 		$this->options_labels = $_options_labels;
 	}
 
-	function update( $ignored = '' ) {
-		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
-		$value = stripslashes_deep( $value );
+	function save( $value ) {
 		if( ! in_array( $value, $this->options ) )
 			$this->reset();
-		else
-			$this->save( $value );
+		parent::save( $value );
 	}
 
 	function write_html() {
