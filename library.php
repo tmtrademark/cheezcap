@@ -144,7 +144,7 @@ class CheezCapDropdownOption extends CheezCapOption {
 				<select name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>">
 				
 				<?php foreach( $this->options as $option ) : ?>
-					<option<?php if ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option ) ) { echo ' selected="selected"'; } ?>><?php echo esc_html( $option ); ?></option>
+					<option<?php selected( ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option ) ), true ) ?>><?php echo esc_html( $option ); ?></option>
 				<?php endforeach; ?>
 				</select>
 			</td>
