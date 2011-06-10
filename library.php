@@ -137,9 +137,10 @@ class CheezCapTextOption extends CheezCapOption {
 class CheezCapDropdownOption extends CheezCapOption {
 	var $options;
 
-	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0 ) {
+	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0, $_options_labels = array() ) {
 		parent::__construct( $_name, $_desc, $_id, $_stdIndex );
 		$this->options = $_options;
+		$this->options_labels = $_options_labels;
 	}
 
 	function Update( $ignored ) {
@@ -157,9 +158,13 @@ class CheezCapDropdownOption extends CheezCapOption {
 			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name ); ?></label></th>
 			<td>
 				<select name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>">
-				
+				<?php $count = 0; ?>
 				<?php foreach( $this->options as $option ) : ?>
-					<option<?php selected( ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option ) ), true ) ?>><?php echo esc_html( $option ); ?></option>
+					<?php $option_label = isset( $this->options_labels[$count] ) ? $this->options_labels[$count] : $option; ?>
+					
+					<option<?php selected( ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option ) ) ) ?> value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></option>
+					
+					<?php $count++; ?>
 				<?php endforeach; ?>
 				</select>
 			</td>
@@ -185,7 +190,7 @@ class CheezCapBooleanOption extends CheezCapDropdownOption {
 
 	function __construct( $_name, $_desc, $_id, $_default = false ) {
 		$this->default = $_default;
-		parent::__construct( $_name, $_desc, $_id, array( 'Disabled', 'Enabled' ), $_default ? 1 : 0 );
+		parent::__construct( $_name, $_desc, $_id, array( 0, 1 ), $_default ? 0 : 1, array( 'Disabled', 'Enabled' ) );
 	}
 
 	function get() {

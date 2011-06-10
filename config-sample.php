@@ -9,7 +9,8 @@
  * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-$number_entries = array( 'Select a Number:', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20' );
+$number_entries = array( '', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20' );
+$number_entries_labels = array( '== Select a Number ==' );
 
 $cap = new CheezCap( array(
 		new CheezCapGroup( 'First Group', 'firstGroup',
@@ -37,8 +38,9 @@ $cap = new CheezCap( array(
 					'Reusable Options Dropdown Example',
 					'This dropdown creates its options by reusing an array.',
 					'resuable_options_dropdown_example',
-					$number_entries
-					// Default index is 0, 0 == 'Select a Number:'
+					$number_entries,
+					0, // Default index is 0, 0 == 'Select a Number:'
+					$number_entries_labels
 				),
 			)
 		),
@@ -75,7 +77,8 @@ $cap = new CheezCap( array(
 					'This dropdown creates its options by reusing an array.',
 					'resuable_options_dropdown_example2',
 					$number_entries,
-					1 // 1
+					1, // 1
+					$number_entries_labels
 				),
 			)
 		),
@@ -112,7 +115,8 @@ $cap = new CheezCap( array(
 					'This dropdown creates its options by reusing an array.',
 					'resuable_options_dropdown_example3',
 					$number_entries,
-					2 // 2
+					2, // 2
+					$number_entries_labels
 				),
 			)
 		)
