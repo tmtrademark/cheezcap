@@ -26,11 +26,11 @@ class CheezCapGroup {
 				<th scope="row">Option</th>
 				<th scope="row">Value</th>
 			</tr>
-		<?php
+			<?php
 			for ( $i=0; $i < count( $this->options ); $i++ ) {
 				$this->options[$i]->WriteHtml();
 			}
-		?>
+			?>
 		</table>
 		<?php
 	}
@@ -52,7 +52,6 @@ class CheezCapOption {
 	}
 
 	function WriteHtml() {
-		echo '';
 	}
 
 	function Update( $ignored ) {
@@ -90,28 +89,34 @@ class CheezCapTextOption extends CheezCapOption {
 		$stdText = $this->std;
 
 		$stdTextOption = get_option( $this->id );
-	        if ( ! empty( $stdTextOption ) )
+		if ( ! empty( $stdTextOption ) )
 			$stdText = $stdTextOption;
 
 		?>
 		<tr valign="top">
 			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name . ':' ); ?></label></th>
-		<?php
-		$commentWidth = 2;
-		if ( $this->useTextArea ) :
-			$commentWidth = 1;
-		?>
-			<td rowspan="2"><textarea style="width:100%;height:100%;" name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>"><?php echo esc_textarea( $stdText ); ?></textarea>
-		<?php
-		else :
-		?>
-			<td><input name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
-		<?php
-		endif;
-		?>
+			<?php
+			$commentWidth = 2;
+			if ( $this->useTextArea ) :
+				$commentWidth = 1; ?>
+				<td rowspan="2">
+					<textarea style="width:100%;height:100%;" name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>"><?php echo esc_textarea( $stdText ); ?></textarea>
+			<?php else : ?>
+				<td>
+					<input name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
+			<?php endif; ?>
 			</td>
 		</tr>
-                <tr valign="top"><td colspan="<?php echo absint( $commentWidth ); ?>"><label for="<?php echo $this->id; ?>"><small><?php echo esc_html( $this->desc ); ?></small></label></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
+		<tr valign="top">
+			<td colspan="<?php echo absint( $commentWidth ); ?>">
+				<label for="<?php echo $this->id; ?>">
+					<small><?php echo esc_html( $this->desc ); ?></small>
+				</label>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td colspan="2"><hr /></td>
+		</tr>
 		<?php
 	}
 
@@ -137,13 +142,10 @@ class CheezCapDropdownOption extends CheezCapOption {
 			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name ); ?></label></th>
 			<td>
 				<select name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>">
-		<?php
-		foreach( $this->options as $option ) :
-		?>
+				
+				<?php foreach( $this->options as $option ) : ?>
 					<option<?php if ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option ) ) { echo ' selected="selected"'; } ?>><?php echo esc_html( $option ); ?></option>
-		<?php
-		endforeach;
-		?>
+				<?php endforeach; ?>
 				</select>
 			</td>
 		</tr>

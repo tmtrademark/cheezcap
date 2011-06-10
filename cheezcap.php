@@ -202,32 +202,29 @@ class CheezCap {
 	
 				<div id="config-tabs">
 					<ul>
-		<?php
-		$groups = $this->get_options();
-		foreach( $groups as $group ) :
-		?>
+					<?php
+					$groups = $this->get_options();
+					foreach( $groups as $group ) :
+					?>
 						<li><a href='<?php echo esc_attr( '#' . $group->id ); ?>'><?php echo esc_html( $group->name ); ?></a></li>
-		<?php
-		endforeach;
-		?>
+					<?php
+					endforeach;
+					?>
 					</ul>
-		<?php
-		foreach( $groups as $group ) :
-		?>
-					<div id='<?php echo esc_attr( $group->id ); ?>'>
-		<?php
-						$group->WriteHtml();
-		?>
-					</div>
-		<?php
-		endforeach;
-		?>
+					
+					<?php foreach( $groups as $group ) : ?>
+						<div id='<?php echo esc_attr( $group->id ); ?>'>
+							<?php $group->WriteHtml(); ?>
+						</div>
+					<?php endforeach; ?>
 				</div>
+				
 				<p class="submit alignleft">
 					<input type="hidden" name="action" value="save" />
 					<?php submit_button( __( 'Save Changes' ), 'primary', 'save', false ); ?>
 				</p>
 				<?php wp_nonce_field( $themeslug . '-action', $themeslug . '-nonce' ); ?>
+				
 			</form>
 			<form enctype="multipart/form-data" method="post">
 				<p class="submit alignleft">
