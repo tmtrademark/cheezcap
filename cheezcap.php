@@ -34,6 +34,10 @@ class CheezCap {
 		
 		$settings['themeslug'] = sanitize_key( $settings['themename'] );
 		
+		// Let's prevent accidentally allowing low-level users access to cap
+		if( ! in_array( $settings['req_cap_to_edit'], apply_filters( 'cheezcap_req_cap_to_edit_whitelist', array( 'manage_network', 'manage_options', 'edit_others_posts', 'publish_posts' ) ) ) )
+			$settings['req_cap_to_edit'] = 'manage_options';
+		
 		$this->settings = $settings;
 		$this->options = $options;
 		
