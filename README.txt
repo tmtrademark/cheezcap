@@ -1,24 +1,35 @@
-//
-// CheezCap - Cheezburger Custom Administration Panel
-// (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
-// LOL: http://cheezburger.com
-// Source: http://github.com/cheezburger/cheezcap/
-// Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
-// License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
-//
+/**
+ * CheezCap - Cheezburger Custom Administration Panel
+ * (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
+ * LOL: http://cheezburger.com
+ * Source: http://github.com/cheezburger/cheezcap/
+ * Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
+ * UnLOLs by Mo Jangda (batmoo@gmail.com)
+ * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+This is a fork of the original CheezCap developed by the fine Cheez-loving Cats over at ICHC. In has various bits of cleanup, the biggest being that it can be shared across multiple themes.
+
+The fork lives at https://github.com/mjangda/cheezcap
+
+"I'm In Yur Dashburd Tweakin' Yur Settings."
 
 ##
 ## Quick Start
 ##
 
-1.  Copy the CheezCap folder into your theme directory
-2.  Add the follwowing line to functions.php (if you don't have a functions.php, create one in your theme directory)
+1.  Copy the cheezcap folder into an appropriate location (maybe where you store your other shared plugins).
+2.  Add the following line to functions.php (if you don't have a functions.php, create one in your theme directory). Adjust the path as needed.
 
-      require_once('cheezcap/cheezcap.php'); 
+      require_once( WP_PLUGINS_DIR . '/cheezcap/cheezcap.php'); 
 
-3.  Edit cheezcap/config.php
+3.  Use the included config-sample.php as a starting point to set up your options. Copy the modified version into your theme and include it.
+
+      require_once( dirname( __FILE__ ) . '/cheezcap-config.php'); 
+
 4.  Sprinkle theme options around your code, like this:
 
+	global $cap;
 	if ($cap->my_boolean_option) {
 		// do stuff	
 	}
@@ -31,7 +42,7 @@
 ## Background
 ##
 
-In order to use the same Wordpress theme for many different Wordpress sites, one of the things we've 
+In order to use the same WordPress theme for many different Wordpress sites, one of the things we've 
 done at Cheezburger is create themes with lots and lots of theme options.  CheezCap is a simple library 
 we've made for creating custom wp-admin panels really, really easily.
 
@@ -43,13 +54,10 @@ It's just that easy!
 ## 
 ## Installation
 ##
-Installation is a two step process.  First, copy the CheezCap folder into your theme directory.  Next,
-add the following line to functions.php in your theme (if you don't have a functions.php, create one
-in the root of your theme directory).
 
-    require_once('cheezcap/cheezcap.php'); 
+Follow the "Quick Start" instructions above.
 
-Finally, to verify that CheezCap has installed correctly, simply open wp-admin and look for the 
+Finally, to verify that CheezCap has installed correctly, simply open /wp-admin and look for the 
 "CheezCap Settings" link on the left navigation panel toward the bottom.
 
 ##
@@ -111,10 +119,13 @@ Allows you to create a dropdown with custom values by passing the constructor an
    OptionsArray = an array containing the values for the dropdown menu
    DefaultIndex = an integer identifying the item in the array that is the default value; if not specified,
                   the default is 0.
+   OptionsLabelsArray = if you want to seperate the labels from values, pass in an array with the labels matching indexes in the
+   						OptionsArray
 
 ##
 ## Usage
 ##
+
 CheezCap makes it easy to access the values that are set in your custom admin pages is easy.  A global 
 variable $cap exists to allow you to access any variable by OptionID.  (Hence, the need for OptionID 
 to be unique.)
@@ -136,4 +147,9 @@ the global variable declaration in order to access $cap, like so:
       echo($cap->my_first_dropdown);
    }
 
-*/
+Ideally, you should set up a helper function so you don't need to declare the global everywhere.
+
+	function mytheme_get_cap_option( $option_name ) {
+		global $cap;
+		return $cap->$option_name;
+	}
