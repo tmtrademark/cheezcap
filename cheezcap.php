@@ -293,3 +293,24 @@ class CheezCap {
 		exit();
 	}
 }
+
+/**
+ * Access $cap option using the CheezCap option name
+ *
+ * @param mixed $option Option name
+ * @param bool $echo Should the value be echoed?
+ * @param string $sanitize_callback Callback function used to sanitize the returned value
+ */
+function cheezcap_get_option( $option, $echo = false, $sanitize_callback = '' ) {
+	global $cap;
+
+	$value = $cap->$option;
+	
+	if( $sanitize_callback && is_callable( $sanitize_callback ) )
+		$value = call_user_func( $sanitize_callback, $value );
+
+	if( $echo )
+		echo $value;
+	else
+		return $value;
+}

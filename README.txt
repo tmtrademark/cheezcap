@@ -34,6 +34,10 @@ The fork lives at https://github.com/mjangda/cheezcap
 		// do stuff	
 	}
 
+4b.  Or use the helper function
+
+	cheezcap_get_option( 'my_boolean_option', true, 'esc_html' );
+
 5.  Enjoy!
 
 
@@ -153,3 +157,7 @@ Ideally, you should set up a helper function so you don't need to declare the gl
 		global $cap;
 		return $cap->$option_name;
 	}
+
+You can also use the built-in helper function:
+
+	cheezcap_get_option( $option, $echo = false, $sanitize_callback = '' )
