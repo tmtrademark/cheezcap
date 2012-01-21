@@ -43,13 +43,17 @@ class CheezCapOption {
 	var $id;
 	var $_key;
 	var $std;
+	var $validation_cb;
 
-	function __construct( $_name, $_desc, $_id, $_std ) {
+	function __construct( $_name, $_desc, $_id, $_std, $_validation_cb = false ) {
 		$this->name = $_name;
 		$this->desc = $_desc;
 		$this->id = "cap_$_id";
 		$this->_key = $_id;
 		$this->std = $_std;
+		if ( $_validation_cb && is_callable( $_validation_cb ) ) {
+			$this->validation_cb = $_validation_cb;
+		}
 	}
 
 	function write_html() {
@@ -57,7 +61,6 @@ class CheezCapOption {
 
 	function update( $ignored = '' ) {
 		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
-		$value = stripslashes_deep( $value );
 		$this->save( $value );
 	}
 
@@ -75,6 +78,10 @@ class CheezCapOption {
 	}
 
 	function save( $value ) {
+		if ( $this->validation_cb )
+			$value = call_user_func($this->validation_cb, $this->id, $value);
+		else
+			$value = stripslashes_deep( $value );
 		update_option( $this->id, $value );
 	}
 
@@ -86,8 +93,8 @@ class CheezCapOption {
 class CheezCapTextOption extends CheezCapOption {
 	var $useTextArea;
 
-	function __construct( $_name, $_desc, $_id, $_std = '', $_useTextArea = false ) {
-		parent::__construct( $_name, $_desc, $_id, $_std );
+	function __construct( $_name, $_desc, $_id, $_std = '', $_useTextArea = false, $_validation_cb = false ) {
+		parent::__construct( $_name, $_desc, $_id, $_std, $_validation_cb );
 		$this->useTextArea = $_useTextArea;
 	}
 
@@ -148,9 +155,9 @@ class CheezCapTextOption extends CheezCapOption {
 class CheezCapDropdownOption extends CheezCapOption {
 	var $options;
 
-	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0, $_options_labels = array() ) {
+	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0, $_options_labels = array(), $_validation_cb = false ) {
 		$_std = ! isset( $_options[$_stdIndex] ) ? $_options[0] : $_options[$_stdIndex];
-		parent::__construct( $_name, $_desc, $_id, $_std );
+		parent::__construct( $_name, $_desc, $_id, $_std, $_validation_cb );
 		$this->options = $_options;
 		$this->options_labels = $_options_labels;
 	}
@@ -170,9 +177,9 @@ class CheezCapDropdownOption extends CheezCapOption {
 				<?php $count = 0; ?>
 				<?php foreach( $this->options as $option ) : ?>
 					<?php $option_label = isset( $this->options_labels[$count] ) ? $this->options_labels[$count] : $option; ?>
-					
+
 					<option<?php selected( ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->std == $option ) ) ) ?> value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></option>
-					
+
 					<?php $count++; ?>
 				<?php endforeach; ?>
 				</select>
@@ -220,6 +227,45 @@ class CheezCapBooleanOption extends CheezCapDropdownOption {
 			default:
 				return false;
 		}
+	}
+}
+
+class CheezCapMultipleCheckboxesOption extends CheezCapOption {
+	var $options_checked;
+	var $options;
+	var $options_labels;
+
+	function __construct( $_name, $_desc, $_id, $_options, $_options_labels = array(), $_options_checked, $_validation_cb = false ) {
+		$this->options = $_options;
+		$this->options_labels = $_options_labels;
+		parent::__construct( $_name, $_desc, $_id, '', $_validation_cb );
+		$this->options_checked = is_array( $_options_checked ) ? $_options_checked : $this->get();
+	}
+
+	function write_html() {
+		?>
+		<tr valign="top">
+			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name ); ?></label></th>
+			<td>
+				<input type="hidden" name="<?php echo esc_attr( $this->id ); ?>" />
+				<?php $count = 0; ?>
+				<?php foreach( $this->options as $option ) : ?>
+				<?php $checked =  in_array( $option , $this->options_checked ) ? ' checked="checked" ' : ''; ?>
+					<?php $option_label = isset( $this->options_labels[$count] ) ? $this->options_labels[$count] : $option; ?>
+					<input type="checkbox" name="<?php echo esc_attr( $this->id ); ?>[]" id="<?php echo esc_attr( $this->id ); ?>-<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php echo $checked; ?> />
+					<label for="<?php echo esc_attr( $this->id ); ?>-<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></label>
+					<?php $count++; ?>
+				<br />
+				<?php endforeach; ?>
+
+			</td>
+		</tr>
+		<tr valign="top">
+			<td colspan=2>
+				<label for="<?php echo $this->id; ?>"><small><?php echo esc_html( $this->desc ); ?></small></label><hr />
+			</td>
+		</tr>
+		<?php
 	}
 }
 
