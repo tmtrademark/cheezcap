@@ -130,34 +130,7 @@ Allows you to create a dropdown with custom values by passing the constructor an
 ## Usage
 ##
 
-CheezCap makes it easy to access the values that are set in your custom admin pages is easy.  A global 
-variable $cap exists to allow you to access any variable by OptionID.  (Hence, the need for OptionID 
-to be unique.)
-
-For example, if you have created a DropdownOption with the OptionID "my_first_dropdown" then you
-would access the value of that option like so:
-
-   $cap->my_first_dropdown
-
-For example, you might want to write that value to the screen:
-
-   echo($cap->my_first_dropdown);
-
-And, in many cases, you will be accessing $cap from inside a function, so you will need to call
-the global variable declaration in order to access $cap, like so:
-
-   function some_function() {
-      global $cap;
-      echo($cap->my_first_dropdown);
-   }
-
-Ideally, you should set up a helper function so you don't need to declare the global everywhere.
-
-	function mytheme_get_cap_option( $option_name ) {
-		global $cap;
-		return $cap->$option_name;
-	}
-
-You can also use the built-in helper function:
+CheezCap makes it easy to access the values that are set in your custom admin pages is easy.
+You can use the built-in helper function:
 
 	cheezcap_get_option( $option, $echo = false, $sanitize_callback = '' )
