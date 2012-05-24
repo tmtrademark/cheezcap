@@ -89,6 +89,7 @@ are three types of Options available to create:
  1. Boolean Option
  2. Text Option
  3. Dropdown Option
+ 4. Multiple Checkboxes Option
 
 ## 1. Boolean Option
 The simplest form of option...creates a true or false dropdown that can be used to turn features on or off.
@@ -103,7 +104,7 @@ The simplest form of option...creates a true or false dropdown that can be used 
 ## 2. Text Option 
 A simple text field that can be used for configurable text, etc.
 
-   new TextOption(Name, Description, OptionID, Default, UseTextArea)
+   new TextOption(Name, Description, OptionID, Default, UseTextArea, ValidationCallback)
 
    Name = a human readable name for the option.
    Description = a human readable description for the option. 
@@ -111,11 +112,12 @@ A simple text field that can be used for configurable text, etc.
    Default = a string as the default value for the option; if not specified, the default is ""
    UseTextArea = a boolean describing if the text option should be written as a text area; if not specified, the 
                  default is false;
+   ValidationCallback = optional custom validation callback (see example)			 
 
 ## 3. Dropdown Option
 Allows you to create a dropdown with custom values by passing the constructor an array of options
 
-   new DropdownOption(Name, Description, OptionID, OptionsArray, DefaultIndex)
+   new DropdownOption(Name, Description, OptionID, OptionsArray, DefaultIndex, OptionsLabelsArray, ValidationCallback)
 
    Name = a human readable name for the option.
    Description = a human readable description for the option. 
@@ -125,6 +127,19 @@ Allows you to create a dropdown with custom values by passing the constructor an
                   the default is 0.
    OptionsLabelsArray = if you want to seperate the labels from values, pass in an array with the labels matching indexes in the
    						OptionsArray
+   ValidationCallback = optional custom validation callback (see example)					
+
+## 4. Multiple Checkboxes Option
+Allows you to create a multiple checkboxes option with custom values by passing the constructor an array of options
+   new MultipleCheezcapOption( Name, Description, OptionID, OptionsValues, OptionsLabels, OptionsChecked, ValidationCallback )
+
+   Name = a human readable name for the option.
+   Description = a human readable description for the option. 
+   OptionID = a machine readable option identifier, cannot have spaces and must be unique
+   OptionsValues = an array containing the values for the dropdown menu
+   OptionsLabels = an array of labels correponding to OptionValues
+   OptionsChecked = an array of keys in OptionsValues that should be checked (selected)
+   ValidationCallback = optional custom validation callback (see example)
 
 ##
 ## Usage

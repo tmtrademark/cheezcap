@@ -12,6 +12,9 @@
 $number_entries = array( '', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20' );
 $number_entries_labels = array( '== Select a Number ==' );
 
+$multiple_checkboxes = array( '', 'one', 'two', 'three' );
+$multiple_checkboxes_labels = array '', 'One', 'Two', 'Three' );
+
 $cap = new CheezCap( array(
 		new CheezCapGroup( 'First Group', 'firstGroup',
 			array(
@@ -41,6 +44,17 @@ $cap = new CheezCap( array(
 					$number_entries,
 					0, // Default index is 0, 0 == 'Select a Number:'
 					$number_entries_labels
+				),
+				new CheezCapMultipleCheckboxesOption(
+					'Multiple Checkboxes Options Example',
+					'Example of multiple checkboxes option',
+					'multiple_checkboxes_example',
+					$multiple_checkboxes,
+					$multiple_checkboxes_labels,
+					// Checked keys of an array
+					array( 'one', 'two' ),
+					// Validation callback, also works on other Cheezcap Options (except boolean)
+					'my_validation_cb'
 				),
 			)
 		),
@@ -127,3 +141,23 @@ $cap = new CheezCap( array(
 		'cap_icon_url' => '', // OPTIONAL: Path to a custom icon for the CheezCap menu item. ex. $cap_icon_url = WP_CONTENT_URL . '/your-theme-name/images/awesomeicon.png'; Image size should be around 20px x 20px.
 	)
 );
+
+
+/**
+ * Custom validation callback
+ *
+ * @param $key cheezcap option key
+ * @param mixed $value value of option
+ *
+ */
+function my_validation_cb( $key, $value ) {
+	switch ( $key ) {
+		case 'my-date':
+			// Perform date specific validation
+		  break;
+		default:
+		  // Treat everything else as string
+		  $value = filter_var( $value, FILTER_SANITIZE_STRING );
+	}
+	return $value;
+}
