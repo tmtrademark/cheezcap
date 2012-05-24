@@ -197,10 +197,8 @@ class CheezCap {
 		?>
 	
 		<div class="wrap">
-			<h2><?php global $title; echo $title; ?></h2>
-	
-			<form method="post">
-	
+			<h2><?php global $title; echo $title; ?></h2>	
+			<form method="post">	
 				<div id="config-tabs">
 					<ul>
 					<?php
@@ -259,6 +257,9 @@ class CheezCap {
 			jQuery(document).ready(function($) {
 				$("#config-tabs").tabs();
 				$('input[name="action"]').click(function(e) {
+					if ( $(this).hasClass( 'delete' ) )
+						return confirm('WARNING! This will DELETE all your settings! Are you sure?' );
+						
 					if( ! $(this).hasClass('import') )
 						return true;
 					
