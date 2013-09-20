@@ -178,7 +178,7 @@ class CheezCapDropdownOption extends CheezCapOption {
 				<?php foreach( $this->options as $option ) : ?>
 					<?php $option_label = isset( $this->options_labels[$count] ) ? $this->options_labels[$count] : $option; ?>
 
-					<option<?php selected( ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->std == $option ) ) ) ?> value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></option>
+					<option<?php selected( ( get_option( $this->id ) == $option || ( null === get_option( $this->id, null ) && $this->std == $option ) ) ) ?> value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></option>
 
 					<?php $count++; ?>
 				<?php endforeach; ?>
