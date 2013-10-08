@@ -250,7 +250,7 @@ class CheezCapMultipleCheckboxesOption extends CheezCapOption {
 				<input type="hidden" name="<?php echo esc_attr( $this->id ); ?>" />
 				<?php $count = 0; ?>
 				<?php foreach( $this->options as $option ) : ?>
-				<?php $checked =  in_array( $option , $this->options_checked ) ? ' checked="checked" ' : ''; ?>
+				<?php $checked =  in_array( $option , (array) $this->options_checked ) ? ' checked="checked" ' : ''; ?>
 					<?php $option_label = isset( $this->options_labels[$count] ) ? $this->options_labels[$count] : $option; ?>
 					<input type="checkbox" name="<?php echo esc_attr( $this->id ); ?>[]" id="<?php echo esc_attr( $this->id ); ?>-<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php echo $checked; ?> />
 					<label for="<?php echo esc_attr( $this->id ); ?>-<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></label>
