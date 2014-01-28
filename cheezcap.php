@@ -305,7 +305,7 @@ class CheezCap {
 function cheezcap_get_option( $option, $echo = false, $sanitize_callback = '' ) {
 	global $cap;
 
-	$value = $cap->$option;
+	$value = isset( $cap->$option ) ? $cap->$option : null;
 	
 	if( $sanitize_callback && is_callable( $sanitize_callback ) )
 		$value = call_user_func( $sanitize_callback, $value );
