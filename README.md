@@ -47,8 +47,8 @@ Automattic has a usually more maintained fork at http://github.com/automattic/ch
 ## Background
 ##
 
-In order to use the same WordPress theme for many different Wordpress sites, one of the things we've 
-done at Cheezburger is create themes with lots and lots of theme options.  CheezCap is a simple library 
+In order to use the same WordPress theme for many different sites, one of the things we've 
+done at Cheezburger is create themes with lots and lots of theme options. CheezCap is a simple library 
 we've made for creating custom wp-admin panels really, really easily.
 
 At a high level, the way it works is simple: edit the arrays in config.php in order to setup your
@@ -126,7 +126,7 @@ Allows you to create a dropdown with custom values by passing the constructor an
    OptionsArray = an array containing the values for the dropdown menu
    DefaultIndex = an integer identifying the item in the array that is the default value; if not specified,
                   the default is 0.
-   OptionsLabelsArray = if you want to seperate the labels from values, pass in an array with the labels matching indexes in the
+   OptionsLabelsArray = if you want to separate the labels from values, pass in an array with the labels matching indexes in the
    						OptionsArray
    ValidationCallback = optional custom validation callback (see example)					
 
@@ -138,7 +138,7 @@ Allows you to create a multiple checkboxes option with custom values by passing 
    Description = a human readable description for the option. 
    OptionID = a machine readable option identifier, cannot have spaces and must be unique
    OptionsValues = an array containing the values for the dropdown menu
-   OptionsLabels = an array of labels correponding to OptionValues
+   OptionsLabels = an array of labels corresponding to OptionValues
    OptionsChecked = an array of keys in OptionsValues that should be checked (selected)
    ValidationCallback = optional custom validation callback (see example)
 
