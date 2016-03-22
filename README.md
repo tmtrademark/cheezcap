@@ -21,24 +21,24 @@ Automattic has a usually more maintained fork at http://github.com/automattic/ch
 
 1.  Copy the cheezcap folder into an appropriate location (maybe where you store your other shared plugins).
 2.  Add the following line to functions.php (if you don't have a functions.php, create one in your theme directory). Adjust the path as needed.
-<br/><br/><pre><code>
+<code>
 	require_once( WP_PLUGINS_DIR . '/cheezcap/cheezcap.php');
-</code></pre><br/>
+</code>
 3.  Use the included config-sample.php as a starting point to set up your options. Copy the modified version into your theme and include it.
-<br/><br/><pre><code>
+<code>
 	require_once( dirname( __FILE__ ) . '/cheezcap-config.php');
-</code></pre><br/>
+</code>
 4.  Sprinkle theme options around your code, like this:
-<br/><br/><pre><code>
+<code>
 	global $cap;
 	if ($cap->my_boolean_option) {
 		// do stuff	
 	}
-</code></pre><br/>
+</code>
 4b.  Or use the helper function
-<br/><br/><pre><code>
+<code>
 	cheezcap_get_option( 'my_boolean_option', true, 'esc_html' );
-</code></pre><br/>
+</code>
 5.  Enjoy!
 
 
