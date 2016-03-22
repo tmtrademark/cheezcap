@@ -1,16 +1,17 @@
-/**
- * CheezCap - Cheezburger Custom Administration Panel
- * (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
- * LOL: http://cheezburger.com
- * Source: http://github.com/cheezburger/cheezcap/
- * Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
- * UnLOLs by Mo Jangda (batmoo@gmail.com)
- * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
- */
+CheezCap - Cheezburger Custom Administration Panel
+================
+* CheezCap - Cheezburger Custom Administration Panel
+* (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
+* LOL: http://cheezburger.com
+* Source: http://github.com/cheezburger/cheezcap/
+* Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
+* UnLOLs by Mo Jangda (batmoo@gmail.com)
+* License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
+ 
 
 This is a fork of the original CheezCap developed by the fine Cheez-loving Cats over at ICHC. In has various bits of cleanup, the biggest being that it can be shared across multiple themes.
 
-The fork lives at https://github.com/mjangda/cheezcap
+Automattic has a usually more maintained fork at http://github.com/automattic/cheezcap
 
 "I'm In Yur Dashburd Tweakin' Yur Settings."
 
@@ -20,24 +21,24 @@ The fork lives at https://github.com/mjangda/cheezcap
 
 1.  Copy the cheezcap folder into an appropriate location (maybe where you store your other shared plugins).
 2.  Add the following line to functions.php (if you don't have a functions.php, create one in your theme directory). Adjust the path as needed.
-
-      require_once( WP_PLUGINS_DIR . '/cheezcap/cheezcap.php'); 
-
+<br/><br/><pre><code>
+	require_once( WP_PLUGINS_DIR . '/cheezcap/cheezcap.php');
+</code></pre><br/>
 3.  Use the included config-sample.php as a starting point to set up your options. Copy the modified version into your theme and include it.
-
-      require_once( dirname( __FILE__ ) . '/cheezcap-config.php'); 
-
+<br/><br/><pre><code>
+	require_once( dirname( __FILE__ ) . '/cheezcap-config.php');
+</code></pre><br/>
 4.  Sprinkle theme options around your code, like this:
-
+<br/><br/><pre><code>
 	global $cap;
 	if ($cap->my_boolean_option) {
 		// do stuff	
 	}
-
+</code></pre><br/>
 4b.  Or use the helper function
-
+<br/><br/><pre><code>
 	cheezcap_get_option( 'my_boolean_option', true, 'esc_html' );
-
+</code></pre><br/>
 5.  Enjoy!
 
 
