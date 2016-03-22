@@ -1,76 +1,88 @@
 <?php
-//
-// CheezCap - Cheezburger Custom Administration Panel
-// (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
-// LOL: http://cheezburger.com
-// Source: http://github.com/cheezburger/cheezcap/
-// Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
-// License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
-//
+/**
+ * CheezCap - Cheezburger Custom Administration Panel
+ * (c) 2008 - 2011 Cheezburger Network (Pet Holdings, Inc.)
+ * LOL: http://cheezburger.com
+ * Source: http://github.com/cheezburger/cheezcap/
+ * Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
+ * UnLOLs by Mo Jangda (batmoo@gmail.com)
+ * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
-class Group {
+class CheezCapGroup {
 	var $name;
 	var $id;
 	var $options;
 
-	function Group( $_name, $_id, $_options ) {
+	function __construct( $_name, $_id, $_options ) {
 		$this->name = $_name;
 		$this->id = "cap_$_id";
 		$this->options = $_options;
 	}
 
-	function WriteHtml() {
+	function write_html() {
 		?>
 		<table class="form-table" width="100%">
 			<tr valign="top">
-				<th scope="row">Option</th>
-				<th scope="row">Value</th>
+				<th scope="row"><?php _e( 'Option', 'cheezcap' ); ?></th>
+				<th scope="row"><?php _e( 'Value', 'cheezcap' ); ?></th>
 			</tr>
-		<?php
+			<?php
 			for ( $i=0; $i < count( $this->options ); $i++ ) {
-				$this->options[$i]->WriteHtml();
+				$this->options[$i]->write_html();
 			}
-		?>
+			?>
 		</table>
 		<?php
 	}
 }
 
-class Option {
+class CheezCapOption {
 	var $name;
 	var $desc;
 	var $id;
 	var $_key;
 	var $std;
+	var $validation_cb;
 
-	function Option( $_name, $_desc, $_id, $_std ) {
+	function __construct( $_name, $_desc, $_id, $_std, $_validation_cb = false ) {
 		$this->name = $_name;
 		$this->desc = $_desc;
 		$this->id = "cap_$_id";
 		$this->_key = $_id;
 		$this->std = $_std;
+		if ( $_validation_cb && is_callable( $_validation_cb ) ) {
+			$this->validation_cb = $_validation_cb;
+		}
 	}
 
-	function WriteHtml() {
-		echo '';
+	function write_html() {
 	}
 
-	function Update( $ignored ) {
-		$value = stripslashes_deep( $_POST[$this->id] );
-		update_option( $this->id, $value );
+	function update( $ignored = '' ) {
+		$value = isset( $_POST[$this->id] ) ? $_POST[$this->id] : '';
+		$this->save( $value );
 	}
 
-	function Reset( $ignored ) {
-		update_option( $this->id, $this->std );
+	function reset( $ignored = '' ) {
+		$this->save( $this->std );
 	}
 
-	function Import( $data ) {
+	function import( $data ) {
 		if ( array_key_exists( $this->id, $data->dict ) )
-			update_option( $this->id, $data->dict[$this->id] );
+			$this->save( $data->dict[$this->id] );
 	}
 
-	function Export( $data ) {
+	function export( $data ) {
 		$data->dict[$this->id] = get_option( $this->id );
+	}
+
+	function save( $value ) {
+		if ( $this->validation_cb )
+			$value = call_user_func($this->validation_cb, $this->id, $value);
+		else
+			$value = stripslashes_deep( $value );
+		update_option( $this->id, $value );
 	}
 
 	function get() {
@@ -78,97 +90,127 @@ class Option {
 	}
 }
 
-class TextOption extends Option {
+class CheezCapTextOption extends CheezCapOption {
 	var $useTextArea;
 
-	function TextOption( $_name, $_desc, $_id, $_std = '', $_useTextArea = false ) {
-		$this->Option( $_name, $_desc, $_id, $_std );
+	function __construct( $_name, $_desc, $_id, $_std = '', $_useTextArea = false, $_validation_cb = false ) {
+		parent::__construct( $_name, $_desc, $_id, $_std, $_validation_cb );
 		$this->useTextArea = $_useTextArea;
 	}
 
-	function WriteHtml() {
+	function save( $value ) {
+		parent::save( $this->sanitize( $value ) );
+	}
+
+	function write_html() {
 		$stdText = $this->std;
 
 		$stdTextOption = get_option( $this->id );
-	        if ( ! empty( $stdTextOption ) )
+		if ( ! empty( $stdTextOption ) )
 			$stdText = $stdTextOption;
 
 		?>
 		<tr valign="top">
-			<th scope="row"><?php echo esc_html( $this->name . ':' ); ?></th>
-		<?php
-		$commentWidth = 2;
-		if ( $this->useTextArea ) :
-			$commentWidth = 1;
-		?>
-			<td rowspan="2"><textarea style="width:100%;height:100%;" name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>"><?php echo esc_textarea( $stdText ); ?></textarea>
-		<?php
-		else :
-		?>
-			<td><input name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
-		<?php
-		endif;
-		?>
+			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name . ':' ); ?></label></th>
+			<?php
+			$commentWidth = 2;
+			if ( $this->useTextArea ) :
+				$commentWidth = 1; ?>
+				<td rowspan="2">
+					<textarea style="width:100%;height:100%;" name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>"><?php echo esc_textarea( $stdText ); ?></textarea>
+			<?php else : ?>
+				<td>
+					<input name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>" type="text" value="<?php echo esc_attr( $stdText ); ?>" size="40" />
+			<?php endif; ?>
 			</td>
 		</tr>
-                <tr valign="top"><td colspan="<?php echo absint( $commentWidth ); ?>"><small><?php echo esc_html( $this->desc ); ?></small></td></tr><tr valign="top"><td colspan="2"><hr /></td></tr>
+		<tr valign="top">
+			<td colspan="<?php echo absint( $commentWidth ); ?>">
+				<label for="<?php echo $this->id; ?>">
+					<small><?php echo esc_html( $this->desc ); ?></small>
+				</label>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td colspan="2"><hr /></td>
+		</tr>
 		<?php
+	}
+
+	function sanitize( $value ) {
+		if( $this->useTextArea )
+			return wp_filter_post_kses( $value );
+		else
+			return strip_tags( $value );
 	}
 
 	function get() {
 		$value = get_option( $this->id );
 		if ( empty( $value ) )
 			return $this->std;
-		return $value;
+		return $this->sanitize( $value );
 	}
 }
 
-class DropdownOption extends Option {
+class CheezCapDropdownOption extends CheezCapOption {
 	var $options;
 
-	function DropdownOption( $_name, $_desc, $_id, $_options, $_stdIndex = 0 ) {
-		$this->Option( $_name, $_desc, $_id, $_stdIndex );
+	function __construct( $_name, $_desc, $_id, $_options, $_stdIndex = 0, $_options_labels = array(), $_validation_cb = false ) {
+		$_std = ! isset( $_options[$_stdIndex] ) ? $_options[0] : $_options[$_stdIndex];
+		parent::__construct( $_name, $_desc, $_id, $_std, $_validation_cb );
 		$this->options = $_options;
+		$this->options_labels = $_options_labels;
 	}
 
-	function WriteHtml() {
+	function save( $value ) {
+		if( ! in_array( $value, $this->options ) )
+			$this->reset();
+		parent::save( $value );
+	}
+
+	function write_html() {
 		?>
 		<tr valign="top">
-			<th scope="row"><?php echo esc_html( $this->name ); ?></th>
+			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name ); ?></label></th>
 			<td>
 				<select name="<?php echo esc_attr( $this->id ); ?>" id="<?php echo esc_attr( $this->id ); ?>">
-		<?php
-		foreach( $this->options as $option ) :
-		?>
-					<option<?php if ( get_option( $this->id ) == $option || ( ! get_option( $this->id ) && $this->options[$this->std] == $option ) ) { echo ' selected="selected"'; } ?>><?php echo esc_html( $option ); ?></option>
-		<?php
-		endforeach;
-		?>
+				<?php $count = 0; ?>
+				<?php foreach( $this->options as $option ) : ?>
+					<?php $option_label = isset( $this->options_labels[$count] ) ? $this->options_labels[$count] : $option; ?>
+
+					<option<?php selected( ( get_option( $this->id ) == $option || ( null === get_option( $this->id, null ) && $this->std == $option ) ) ) ?> value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></option>
+
+					<?php $count++; ?>
+				<?php endforeach; ?>
 				</select>
 			</td>
 		</tr>
 		<tr valign="top">
 			<td colspan=2>
-				<small><?php echo esc_html( $this->desc ); ?></small><hr />
+				<label for="<?php echo $this->id; ?>"><small><?php echo esc_html( $this->desc ); ?></small></label><hr />
 			</td>
 		</tr>
 		<?php
 	}
 
+	function sanitize( $value ) {
+		return strip_tags( $value );
+	}
+
 	function get() {
 		$value = get_option( $this->id, $this->std );
-        	if ( strtolower( $value ) == 'disabled' )
+		if ( strtolower( $value ) == 'disabled' )
 			return false;
-		return $value;
+		return $this->sanitize( $value );
 	}
 }
 
-class BooleanOption extends DropdownOption {
+class CheezCapBooleanOption extends CheezCapDropdownOption {
 	var $default;
 
-	function BooleanOption( $_name, $_desc, $_id, $_default = false ) {
+	function __construct( $_name, $_desc, $_id, $_default = false ) {
 		$this->default = $_default;
-		$this->DropdownOption( $_name, $_desc, $_id, array( 'Disabled', 'Enabled' ), $_default ? 1 : 0 );
+		parent::__construct( $_name, $_desc, $_id, array( 0, 1 ), $_default ? 0 : 1, array( 'Disabled', 'Enabled' ) );
 	}
 
 	function get() {
@@ -179,6 +221,8 @@ class BooleanOption extends DropdownOption {
 			case 'true':
 			case 'enable':
 			case 'enabled':
+			case '1':
+			case 1:
 				return true;
 			default:
 				return false;
@@ -186,130 +230,45 @@ class BooleanOption extends DropdownOption {
 	}
 }
 
-// This class is the handy short cut for accessing config options
-//
-// $cap->post_ratings is the same as get_bool_option("cap_post_ratings", false)
-//
-class autoconfig {
-	private $data = false;
-	private $cache = array();
+class CheezCapMultipleCheckboxesOption extends CheezCapOption {
+	var $options_checked;
+	var $options;
+	var $options_labels;
 
-	function init() {
-		if ( $this->data )
-			return;
-
-		$this->data = array();
-		$options = cap_get_options();
-
-		foreach ( $options as $group ) {
-			foreach( $group->options as $option ) {
-				$this->data[$option->_key] = $option;
-			}
-		}
+	function __construct( $_name, $_desc, $_id, $_options, $_options_labels = array(), $_options_checked, $_validation_cb = false ) {
+		$this->options = $_options;
+		$this->options_labels = $_options_labels;
+		parent::__construct( $_name, $_desc, $_id, '', $_validation_cb );
+		$this->options_checked = is_array( $_options_checked ) ? $_options_checked : $this->get();
 	}
 
-	public function __get( $name ) {
-		$this->init();
+	function write_html() {
+		?>
+		<tr valign="top">
+			<th scope="row"><label for="<?php echo $this->id; ?>"><?php echo esc_html( $this->name ); ?></label></th>
+			<td>
+				<input type="hidden" name="<?php echo esc_attr( $this->id ); ?>" />
+				<?php $count = 0; ?>
+				<?php foreach( $this->options as $option ) : ?>
+				<?php $checked =  in_array( $option , (array) $this->options_checked ) ? ' checked="checked" ' : ''; ?>
+					<?php $option_label = isset( $this->options_labels[$count] ) ? $this->options_labels[$count] : $option; ?>
+					<input type="checkbox" name="<?php echo esc_attr( $this->id ); ?>[]" id="<?php echo esc_attr( $this->id ); ?>-<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php echo $checked; ?> />
+					<label for="<?php echo esc_attr( $this->id ); ?>-<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option_label ); ?></label>
+					<?php $count++; ?>
+				<br />
+				<?php endforeach; ?>
 
-		if ( array_key_exists( $name, $this->cache ) )
-			return $this->cache[$name];
-
-		$option = $this->data[$name];
-		if ( empty( $option ) )
-			throw new Exception( "Unknown key: $name" );
-
-		$value = $this->cache[$name] = $option->get();
-		return $value;
+			</td>
+		</tr>
+		<tr valign="top">
+			<td colspan=2>
+				<label for="<?php echo $this->id; ?>"><small><?php echo esc_html( $this->desc ); ?></small></label><hr />
+			</td>
+		</tr>
+		<?php
 	}
 }
 
-function cap_admin_css() {
-	wp_enqueue_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.3/themes/base/jquery-ui.css', false, '1.7.3' );
-}
-
-function cap_admin_js_libs() {
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-tabs' );
-}
-
-function cap_admin_js_footer() {
-?>
-<script type="text/javascript">
-/* <![CDATA[ */
-	jQuery(document).ready(function($) {
-		$("#config-tabs").tabs();
-	});
-/* ]]> */
-</script>
-<?php
-}
-
-function top_level_settings() {
-	global $themename;
-
-	if ( isset( $_REQUEST['saved'] ) )
-		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings saved.' ) . '</strong></p></div>';
-	if ( isset( $_REQUEST['reset'] ) )
-		echo '<div id="message" class="updated fade"><p><strong>' . esc_html( $themename . ' settings reset.' ) . '</strong></p></div>';
-	?>
-
-	<div class="wrap">
-		<h2><b><?php echo esc_html( $themename . ' Theme Options.' ); ?></b></h2>
-
-		<form method="post">
-
-			<div id="config-tabs">
-				<ul>
-	<?php
-	$groups = cap_get_options();
-	foreach( $groups as $group ) :
-	?>
-					<li><a href='<?php echo esc_attr( '#' . $group->id ); ?>'><?php echo esc_html( $group->name ); ?></a></li>
-	<?php
-	endforeach;
-	?>
-				</ul>
-	<?php
-	foreach( $groups as $group ) :
-	?>
-				<div id='<?php echo esc_attr( $group->id ); ?>'>
-	<?php
-					$group->WriteHtml();
-	?>
-				</div>
-	<?php
-	endforeach;
-	?>
-			</div>
-			<p class="submit alignleft">
-				<input type="hidden" name="action" value="save" />
-				<input name="save" type="submit" value="Save changes" />
-			</p>
-		</form>
-		<form enctype="multipart/form-data" method="post">
-			<p class="submit alignleft">
-				<input name="action" type="submit" value="Reset" />
-			</p>
-			<p class="submit alignleft" style='margin-left:20px'>
-				<input name="action" type="submit" value="Export" />
-			</p>
-			<p class="submit alignleft">
-				<input name="action" type="submit" value="Import" />
-				<input type="file" name="file" />
-			</p>
-		</form>
-		<div class="clear"></div>
-		<h2>Preview (updated when options are saved)</h2>
-		<iframe src="<?php echo esc_url( home_url( '?preview=true' ) ); ?>" width="100%" height="600" ></iframe>
-	<?php
-}
-
-class ImportData {
+class CheezCapImportData {
 	var $dict = array();
-}
-
-function cap_serialize_export( $data ) {
-	header( 'Content-disposition: attachment; filename=theme-export.txt' );
-	echo serialize( $data );
-	exit();
 }
