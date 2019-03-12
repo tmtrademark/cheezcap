@@ -13,7 +13,7 @@ $number_entries = array( '', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 
 $number_entries_labels = array( '== Select a Number ==' );
 
 $multiple_checkboxes = array( '', 'one', 'two', 'three' );
-$multiple_checkboxes_labels = array '', 'One', 'Two', 'Three' );
+$multiple_checkboxes_labels = array( '', 'One', 'Two', 'Three' );
 
 $cap = new CheezCap( array(
 		new CheezCapGroup( 'First Group', 'firstGroup',
