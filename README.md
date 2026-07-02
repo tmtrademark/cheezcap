@@ -151,16 +151,6 @@ You can use the built-in helper function:
 
 	cheezcap_get_option( $option, $echo = false, $sanitize_callback = '' )
 	
-##
-## Actions
-##
-
-Below are all of the actions you can hook in to:
-
-* cheezcap_update
-* cheezcap_reset
-* cheezcap_export
-* cheezcap_import
 
 ##
 ## Methods
