@@ -11,7 +11,7 @@ CheezCap - Cheezburger Custom Administration Panel
 
 This is a fork of the original CheezCap developed by the fine Cheez-loving Cats over at ICHC. In has various bits of cleanup, the biggest being that it can be shared across multiple themes.
 
-Automattic has a usually more maintained fork at http://github.com/automattic/cheezcap
+The fork lives at https://github.com/mjangda/cheezcap
 
 "I'm In Yur Dashburd Tweakin' Yur Settings."
 
@@ -21,24 +21,24 @@ Automattic has a usually more maintained fork at http://github.com/automattic/ch
 
 1.  Copy the cheezcap folder into an appropriate location (maybe where you store your other shared plugins).
 2.  Add the following line to functions.php (if you don't have a functions.php, create one in your theme directory). Adjust the path as needed.
-<code>
+<br/><br/><pre><code>
 	require_once( WP_PLUGINS_DIR . '/cheezcap/cheezcap.php');
-</code>
+</code></pre><br/>
 3.  Use the included config-sample.php as a starting point to set up your options. Copy the modified version into your theme and include it.
-<code>
+<br/><br/><pre><code>
 	require_once( dirname( __FILE__ ) . '/cheezcap-config.php');
-</code>
+</code></pre><br/>
 4.  Sprinkle theme options around your code, like this:
-<code>
+<br/><br/><pre><code>
 	global $cap;
 	if ($cap->my_boolean_option) {
 		// do stuff	
 	}
-</code>
+</code></pre><br/>
 4b.  Or use the helper function
-<code>
+<br/><br/><pre><code>
 	cheezcap_get_option( 'my_boolean_option', true, 'esc_html' );
-</code>
+</code></pre><br/>
 5.  Enjoy!
 
 
@@ -47,8 +47,8 @@ Automattic has a usually more maintained fork at http://github.com/automattic/ch
 ## Background
 ##
 
-In order to use the same WordPress theme for many different sites, one of the things we've 
-done at Cheezburger is create themes with lots and lots of theme options. CheezCap is a simple library 
+In order to use the same WordPress theme for many different Wordpress sites, one of the things we've 
+done at Cheezburger is create themes with lots and lots of theme options.  CheezCap is a simple library 
 we've made for creating custom wp-admin panels really, really easily.
 
 At a high level, the way it works is simple: edit the arrays in config.php in order to setup your
@@ -126,7 +126,7 @@ Allows you to create a dropdown with custom values by passing the constructor an
    OptionsArray = an array containing the values for the dropdown menu
    DefaultIndex = an integer identifying the item in the array that is the default value; if not specified,
                   the default is 0.
-   OptionsLabelsArray = if you want to separate the labels from values, pass in an array with the labels matching indexes in the
+   OptionsLabelsArray = if you want to seperate the labels from values, pass in an array with the labels matching indexes in the
    						OptionsArray
    ValidationCallback = optional custom validation callback (see example)					
 
@@ -138,7 +138,7 @@ Allows you to create a multiple checkboxes option with custom values by passing 
    Description = a human readable description for the option. 
    OptionID = a machine readable option identifier, cannot have spaces and must be unique
    OptionsValues = an array containing the values for the dropdown menu
-   OptionsLabels = an array of labels corresponding to OptionValues
+   OptionsLabels = an array of labels correponding to OptionValues
    OptionsChecked = an array of keys in OptionsValues that should be checked (selected)
    ValidationCallback = optional custom validation callback (see example)
 
@@ -150,3 +150,24 @@ CheezCap makes it easy to access the values that are set in your custom admin pa
 You can use the built-in helper function:
 
 	cheezcap_get_option( $option, $echo = false, $sanitize_callback = '' )
+	
+##
+## Actions
+##
+
+Below are all of the actions you can hook in to:
+
+* cheezcap_update
+* cheezcap_reset
+* cheezcap_export
+* cheezcap_import
+
+##
+## Methods
+##
+
+Calling the get_data method returns all of the input.
+
+```
+	$data_arr = $cap->get_data();
+```
