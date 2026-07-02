@@ -7,11 +7,6 @@ CheezCap - Cheezburger Custom Administration Panel
 * Authors: Kyall Barrows, Toby McKes, Stefan Rusek, Scott Porad
 * UnLOLs by Mo Jangda (batmoo@gmail.com)
 * License: GNU General Public License, version 2 (GPL), http://www.gnu.org/licenses/gpl-2.0.html
- 
-
-This is a fork of the original CheezCap developed by the fine Cheez-loving Cats over at ICHC. In has various bits of cleanup, the biggest being that it can be shared across multiple themes.
-
-The fork lives at https://github.com/mjangda/cheezcap
 
 "I'm In Yur Dashburd Tweakin' Yur Settings."
 
